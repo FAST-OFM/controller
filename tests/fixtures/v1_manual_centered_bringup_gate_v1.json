@@ -1,0 +1,55 @@
+{
+  "fixture_id": "v1_manual_centered_bringup_gate_v1",
+  "schema_version": 1,
+  "software_only": true,
+  "contains_hardware_commands": false,
+  "may_open_camera": false,
+  "may_open_serial_port": false,
+  "may_open_network": false,
+  "may_access_gpio": false,
+  "may_move_stage": false,
+  "may_emit_light": false,
+  "may_flash_firmware": false,
+  "bringup": {
+    "procedure_reviewed": true,
+    "operator_manual_center_confirmed": true,
+    "live_test_approval_id": "hardware-stage-5a-v1-manual-centered-bounded",
+    "emergency_stop_available": true,
+    "stop_conditions_reviewed": true,
+    "homing_commands_requested": false,
+    "scan_workflow_requested": false,
+    "z_motion_enabled": true,
+    "predictive_z_commands_enabled": false,
+    "xy_envelope": {
+      "center_x_mm": 0.0,
+      "center_y_mm": 0.0,
+      "radius_x_mm": 10.0,
+      "radius_y_mm": 10.0
+    },
+    "z_focus_envelope": {
+      "manual_focus_z_um": 0.0,
+      "min_delta_um": -80.0,
+      "max_delta_um": 80.0
+    },
+    "planned_positions": [
+      {
+        "label": "manual-center",
+        "x_mm": 0.0,
+        "y_mm": 0.0,
+        "z_um": 0.0
+      },
+      {
+        "label": "x-positive-bound",
+        "x_mm": 10.0,
+        "y_mm": 0.0,
+        "z_um": 40.0
+      },
+      {
+        "label": "y-negative-bound",
+        "x_mm": 0.0,
+        "y_mm": -10.0,
+        "z_um": -40.0
+      }
+    ]
+  }
+}

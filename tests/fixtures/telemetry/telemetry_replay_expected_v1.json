@@ -1,0 +1,49 @@
+{
+  "contract_id": "observability_telemetry_event_v1",
+  "fixture_id": "fixture_core_software_only_telemetry_v1",
+  "source_fixture_id": "fixture_pi_software_only_telemetry_v1",
+  "source_fixture_sha256": "2a52ea21678977076c2a7e15a2111da59cadb3f1927cc9e54afa81e004e2cc12",
+  "event_names": [
+    "acquisition_run_started",
+    "camera_frame_received",
+    "frame_match_decision",
+    "calibration_bundle_resolved",
+    "calibration_check_failed",
+    "autofocus_sample_validated",
+    "tissue_mask_decision",
+    "autofocus_metric_computed",
+    "predictive_z_prediction",
+    "acquisition_run_stopped"
+  ],
+  "event_counts": {
+    "acquisition_run_started": 1,
+    "acquisition_run_stopped": 1,
+    "autofocus_metric_computed": 1,
+    "autofocus_sample_validated": 1,
+    "calibration_bundle_resolved": 1,
+    "calibration_check_failed": 1,
+    "camera_frame_received": 1,
+    "frame_match_decision": 1,
+    "predictive_z_prediction": 1,
+    "tissue_mask_decision": 1
+  },
+  "run_ids": [
+    "run-telemetry-v1"
+  ],
+  "scan_ids": [
+    "scan-telemetry-v1"
+  ],
+  "frame_ids": [
+    42,
+    43
+  ],
+  "summary": {
+    "record_count": 10,
+    "invalid_record_count": 0,
+    "hardware_output_enabled_count": 0,
+    "live_hardware_access_count": 0,
+    "unsafe_payload_field_count": 0,
+    "diagnostic_identity_source_count": 0,
+    "unknown_event_name_count": 0
+  }
+}

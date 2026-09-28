@@ -1,0 +1,82 @@
+{
+  "schema_id": "firmware_startup_blocker_report_v1",
+  "schema_version": "1.0.0",
+  "generated_at": "2026-07-02T00:00:00Z",
+  "owner_repo": "scanner-firmware",
+  "target": "scanner-firmware-issue-093-startup-blockers",
+  "issue_id": "093",
+  "readiness_state": "blocked",
+  "hardware_outputs_enabled": false,
+  "live_test_approval": {
+    "required": true,
+    "approved": false,
+    "issue_or_pr": null
+  },
+  "checks": [
+    {
+      "id": "controller_identity_static_only",
+      "domain": "controller",
+      "status": "unknown",
+      "evidence": "boards/kingroon_mono_v2/board.md",
+      "message": "Controller identity remains documentation/user-report based; no live controller probing is performed."
+    },
+    {
+      "id": "trigger_output_static_only",
+      "domain": "trigger",
+      "status": "unknown",
+      "evidence": "boards/kingroon_mono_v2/board.md",
+      "message": "Current trigger path is documented as a likely physical route, not live-approved output behavior."
+    },
+    {
+      "id": "led_outputs_static_only",
+      "domain": "led",
+      "status": "unknown",
+      "evidence": "boards/kingroon_mono_v2/board.md",
+      "message": "LED gate assignments require external drive/current-limit validation; no LED output is approved by this report."
+    },
+    {
+      "id": "live_outputs_disabled",
+      "domain": "live_output_gate",
+      "status": "pass",
+      "evidence": "software-only issue 093 fixture",
+      "message": "The report does not enable or approve live hardware outputs."
+    }
+  ],
+  "unknowns": [
+    {
+      "field": "controller.live_identity",
+      "domain": "controller",
+      "reason": "Controller identity is not verified from a live board in this software-only fixture."
+    },
+    {
+      "field": "trigger.electrical_behavior",
+      "domain": "trigger",
+      "reason": "Trigger voltage, polarity, load behavior and camera/sync acceptance are not measured by static readiness."
+    },
+    {
+      "field": "led.driver_current_limit",
+      "domain": "led",
+      "reason": "LED drive circuit, current limiting, polarity and load behavior are not inferred from candidate pin names."
+    }
+  ],
+  "blockers": [
+    {
+      "id": "controller_live_identity_unknown",
+      "domain": "controller",
+      "severity": "p0",
+      "message": "Startup readiness must remain blocked until controller identity and safe connection state are verified outside this fixture."
+    },
+    {
+      "id": "trigger_live_output_unapproved",
+      "domain": "trigger",
+      "severity": "p0",
+      "message": "Trigger output behavior is not live-approved; do not command camera or sync trigger output from this report."
+    },
+    {
+      "id": "led_live_output_unapproved",
+      "domain": "led",
+      "severity": "p0",
+      "message": "LED output behavior is not live-approved; do not drive LEDs from this report."
+    }
+  ]
+}

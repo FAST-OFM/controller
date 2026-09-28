@@ -1,0 +1,64 @@
+{
+  "event_count": 2,
+  "event_names": [
+    "readiness_check_result",
+    "readiness_check_result"
+  ],
+  "events": [
+    {
+      "event_name": "readiness_check_result",
+      "hardware_outputs_enabled": false,
+      "live_hardware_access_used": false,
+      "payload": {
+        "blocker_count": 0,
+        "check": {
+          "evidence": "tests/fixtures/firmware_config_split_valid.json",
+          "id": "firmware_config_schema",
+          "message": "Firmware config schema accepted.",
+          "scope": "config",
+          "status": "pass"
+        },
+        "readiness_state": "safe_disabled",
+        "report_kind": "readiness_check_result",
+        "target": "scanner-firmware-telemetry-fixture",
+        "unknown_count": 0
+      },
+      "run_id": "run-fixture-telemetry",
+      "schema_id": "firmware_telemetry_event_v1",
+      "schema_version": "1.0.0",
+      "severity": "info",
+      "source_component": "scanner-firmware.telemetry.report.readiness"
+    },
+    {
+      "event_name": "readiness_check_result",
+      "hardware_outputs_enabled": false,
+      "live_hardware_access_used": false,
+      "payload": {
+        "blocker_count": 0,
+        "check": {
+          "evidence": "scanner-docs/governance/live-test-approval-gate.md",
+          "id": "live_test_approval_gate",
+          "message": "Live hardware approval is not granted by telemetry.",
+          "scope": "live_test_gate",
+          "status": "blocked"
+        },
+        "readiness_state": "safe_disabled",
+        "report_kind": "readiness_check_result",
+        "target": "scanner-firmware-telemetry-fixture",
+        "unknown_count": 0
+      },
+      "run_id": "run-fixture-telemetry",
+      "schema_id": "firmware_telemetry_event_v1",
+      "schema_version": "1.0.0",
+      "severity": "warning",
+      "source_component": "scanner-firmware.telemetry.report.readiness"
+    }
+  ],
+  "generated_at": "2026-07-02T00:00:00Z",
+  "hardware_outputs_enabled": false,
+  "live_hardware_access_used": false,
+  "report_id": "readiness-telemetry-v1",
+  "schema_id": "firmware_telemetry_report_v1",
+  "schema_version": "1.0.0",
+  "source_component": "scanner-firmware.telemetry.report.readiness"
+}

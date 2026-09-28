@@ -1,0 +1,161 @@
+{
+  "phase": "dry_run",
+  "hardware_outputs_enabled": false,
+  "candidates": {
+    "klipper": [
+      {
+        "frame_id": 0,
+        "stripe_frame_index": 0,
+        "pattern": "BF_WHITE",
+        "led_gate_names": [
+          "led_white"
+        ],
+        "trigger_output_name": "camera_or_sync_trigger",
+        "coordinate_source_used": "step_indexed",
+        "coordinate_flags": [],
+        "position_axis": "X",
+        "event_position": 20,
+        "sample_position": 20,
+        "position_overshoot_count": 0,
+        "x_count": 20,
+        "y_count": 0,
+        "z_count": 0,
+        "x_step_commanded": 20,
+        "y_step_commanded": 0,
+        "mcu_time_us": 1000
+      },
+      {
+        "frame_id": 1,
+        "stripe_frame_index": 1,
+        "pattern": "AF_RED_GREEN",
+        "led_gate_names": [
+          "led_red",
+          "led_green"
+        ],
+        "trigger_output_name": "camera_or_sync_trigger",
+        "coordinate_source_used": "step_indexed",
+        "coordinate_flags": [],
+        "position_axis": "X",
+        "event_position": 40,
+        "sample_position": 40,
+        "position_overshoot_count": 0,
+        "x_count": 40,
+        "y_count": 0,
+        "z_count": 0,
+        "x_step_commanded": 40,
+        "y_step_commanded": 0,
+        "mcu_time_us": 2000
+      }
+    ],
+    "grblhal": [
+      {
+        "frame_id": 0,
+        "stripe_frame_index": 0,
+        "pattern": "BF_WHITE",
+        "led_gate_names": [
+          "led_white"
+        ],
+        "trigger_output_name": "camera_or_sync_trigger",
+        "coordinate_source_used": "step_indexed",
+        "coordinate_flags": [],
+        "position_axis": "X",
+        "event_position": 25,
+        "sample_position": 25,
+        "position_overshoot_count": 0,
+        "x_count": 25,
+        "y_count": 5,
+        "z_count": 0,
+        "x_step_commanded": 25,
+        "y_step_commanded": 5,
+        "mcu_time_us": 25
+      },
+      {
+        "frame_id": 1,
+        "stripe_frame_index": 1,
+        "pattern": "BF_WHITE",
+        "led_gate_names": [
+          "led_white"
+        ],
+        "trigger_output_name": "camera_or_sync_trigger",
+        "coordinate_source_used": "step_indexed",
+        "coordinate_flags": [],
+        "position_axis": "X",
+        "event_position": 50,
+        "sample_position": 50,
+        "position_overshoot_count": 0,
+        "x_count": 50,
+        "y_count": 5,
+        "z_count": 0,
+        "x_step_commanded": 50,
+        "y_step_commanded": 5,
+        "mcu_time_us": 50
+      }
+    ],
+    "external-rp2040-sync-board": [
+      {
+        "frame_id": 0,
+        "stripe_frame_index": 0,
+        "pattern": "BF_WHITE",
+        "led_gate_names": [
+          "led_white"
+        ],
+        "trigger_output_name": "camera_or_sync_trigger",
+        "coordinate_source_used": "step_indexed",
+        "coordinate_flags": [],
+        "position_axis": "X",
+        "event_position": 10,
+        "sample_position": 10,
+        "position_overshoot_count": 0,
+        "x_count": 10,
+        "y_count": 0,
+        "z_count": 0,
+        "x_step_commanded": 10,
+        "y_step_commanded": 0,
+        "mcu_time_us": 10
+      },
+      {
+        "frame_id": 1,
+        "stripe_frame_index": 1,
+        "pattern": "AF_RED_GREEN",
+        "led_gate_names": [
+          "led_red",
+          "led_green"
+        ],
+        "trigger_output_name": "camera_or_sync_trigger",
+        "coordinate_source_used": "step_indexed",
+        "coordinate_flags": [],
+        "position_axis": "X",
+        "event_position": 20,
+        "sample_position": 20,
+        "position_overshoot_count": 0,
+        "x_count": 20,
+        "y_count": 0,
+        "z_count": 0,
+        "x_step_commanded": 20,
+        "y_step_commanded": 0,
+        "mcu_time_us": 20
+      },
+      {
+        "frame_id": 2,
+        "stripe_frame_index": 2,
+        "pattern": "BF_WHITE",
+        "led_gate_names": [
+          "led_white"
+        ],
+        "trigger_output_name": "camera_or_sync_trigger",
+        "coordinate_source_used": "step_indexed",
+        "coordinate_flags": [],
+        "position_axis": "X",
+        "event_position": 30,
+        "sample_position": 30,
+        "position_overshoot_count": 0,
+        "x_count": 30,
+        "y_count": 0,
+        "z_count": 0,
+        "x_step_commanded": 30,
+        "y_step_commanded": 0,
+        "mcu_time_us": 30
+      }
+    ]
+  }
+}

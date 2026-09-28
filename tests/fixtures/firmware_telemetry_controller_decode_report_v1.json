@@ -1,0 +1,53 @@
+{
+  "event_count": 1,
+  "event_names": [
+    "controller_event_decoded"
+  ],
+  "events": [
+    {
+      "event_name": "controller_event_decoded",
+      "hardware_outputs_enabled": false,
+      "live_hardware_access_used": false,
+      "payload": {
+        "capture": {
+          "accepted": true,
+          "event_types": [
+            "FRAME_EVENT",
+            "SCHEDULER_TERMINAL"
+          ],
+          "first_frame_id": 40,
+          "frame_count": 1,
+          "last_frame_id": 40,
+          "next_frame_id": 41,
+          "record_count": 2,
+          "stripes_seen": [
+            3
+          ],
+          "terminal_count": 1,
+          "timed_output_sequence_status_count": 0,
+          "z_applied_count": 0,
+          "z_outcomes": [],
+          "z_rejected_count": 0,
+          "z_scheduled_count": 0
+        },
+        "report_kind": "controller_decode_summary",
+        "scan_ids": [
+          "scan-telemetry"
+        ]
+      },
+      "run_id": "run-fixture-telemetry",
+      "scan_id": "scan-telemetry",
+      "schema_id": "firmware_telemetry_event_v1",
+      "schema_version": "1.0.0",
+      "severity": "info",
+      "source_component": "scanner-firmware.telemetry.report.controller_decode"
+    }
+  ],
+  "generated_at": "2026-07-02T00:00:00Z",
+  "hardware_outputs_enabled": false,
+  "live_hardware_access_used": false,
+  "report_id": "controller-decode-telemetry-v1",
+  "schema_id": "firmware_telemetry_report_v1",
+  "schema_version": "1.0.0",
+  "source_component": "scanner-firmware.telemetry.report.controller_decode"
+}

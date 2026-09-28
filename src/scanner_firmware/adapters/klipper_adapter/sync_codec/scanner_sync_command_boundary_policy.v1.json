@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "artifact_id": "scanner_sync_command_boundary_policy_v1",
+  "contract_id": "firmware_scanner_sync_command_boundary_v1",
+  "validation_id": "static_scanner_sync_command_boundary_check",
+  "interface_row_id": "row_firmware_scanner_sync_command_boundary_v1_scanner_firmware_to_experiments",
+  "source_of_truth": [
+    "specifications/pi-mcu-protocol.md",
+    "specifications/schedule-z-command-schema.yaml",
+    "specifications/naming-registry.md"
+  ],
+  "protocol_version": "1.0.0",
+  "software_only": true,
+  "hardware_outputs_enabled": false,
+  "canonical_commands": [
+    "scanner_sync_start",
+    "scanner_sync_schedule_z",
+    "scanner_sync_run_stationary_af_test",
+    "scanner_sync_run_timed_output_sequence",
+    "scanner_sync_stop"
+  ],
+  "legacy_aliases": {
+    "schedule_z": {
+      "canonical": "scanner_sync_schedule_z",
+      "allowed_only_when_context_field": "allow_legacy_alias_at_adapter_boundary"
+    }
+  },
+  "forbidden_commands": [
+    "move_z_now"
+  ],
+  "stop_reasons": [
+    "coordinate_source_error",
+    "host_stop",
+    "scheduler_fault"
+  ],
+  "common_required_fields": [
+    "cmd",
+    "seq",
+    "scan_id",
+    "stripe_id"
+  ],
+  "command_required_fields": {
+    "scanner_sync_start": [
+      "next_frame_id"
+    ],
+    "scanner_sync_schedule_z": [
+      "z_target_um"
+    ],
+    "scanner_sync_run_stationary_af_test": [
+      "first_frame_id",
+      "frame_count",
+      "frame_period_us",
+      "event_position_count",
+      "settle_us",
+      "xvs_trigger_pulse_us",
+      "exposure_hold_us"
+    ],
+    "scanner_sync_run_timed_output_sequence": [
+      "seq_id",
+      "repeat_count",
+      "steps"
+    ],
+    "scanner_sync_stop": [
+      "reason"
+    ]
+  },
+  "command_optional_fields": {
+    "scanner_sync_start": [
+      "source",
+      "protocol_version",
+      "hardware_outputs_enabled"
+    ],
+    "scanner_sync_schedule_z": [
+      "source",
+      "protocol_version",
+      "hardware_outputs_enabled",
+      "apply_at_frame_id",
+      "apply_at_position_count",
+      "apply_at_position_um",
+      "confidence"
+    ],
+    "scanner_sync_run_stationary_af_test": [
+      "source",
+      "protocol_version",
+      "hardware_outputs_enabled",
+      "pattern_id",
+      "position_axis",
+      "diagnostic_only"
+    ],
+    "scanner_sync_run_timed_output_sequence": [
+      "source",
+      "protocol_version",
+      "hardware_outputs_enabled",
+      "mode",
+      "start_condition",
+      "start_position_count",
+      "frame_id_base",
+      "pattern_id",
+      "safe_output_mask",
+      "safe_output_values",
+      "idle_output_mask",
+      "idle_output_values",
+      "diagnostic_only"
+    ],
+    "scanner_sync_stop": [
+      "source",
+      "protocol_version",
+      "hardware_outputs_enabled"
+    ]
+  },
+  "schedule_z_target_policy": {
+    "requires_at_least_one_future_target": true,
+    "frame_and_position_target_kinds_are_mutually_exclusive": true,
+    "target_fields": [
+      "apply_at_frame_id",
+      "apply_at_position_count",
+      "apply_at_position_um"
+    ],
+    "physical_position_target_requires_count_basis": true,
+    "confidence_range": [
+      0.0,
+      1.0
+    ]
+  },
+  "sequence_policy": {
+    "seq_must_be_non_negative": true,
+    "duplicate_seq_forbidden": true,
+    "contiguous_when_context_requires": true
+  },
+  "context_fields": {
+    "dry_run": true,
+    "replay": true,
+    "require_contiguous_seq": true,
+    "allow_hardware_outputs": false,
+    "allow_legacy_alias_at_adapter_boundary": false
+  },
+  "forbidden_record_keys": [
+    "camera_device",
+    "controller",
+    "controller_access",
+    "firmware_flash",
+    "flash_command",
+    "gpio",
+    "gpio_pin",
+    "klipper_device",
+    "led_output",
+    "live_motion_result",
+    "motion",
+    "move_z_now",
+    "serial_port",
+    "socket",
+    "usb_device"
+  ],
+  "boolean_safety_fields": [
+    "contains_hardware_commands",
+    "hardware_outputs_enabled",
+    "may_access_controller",
+    "may_access_gpio",
+    "may_command_motion",
+    "may_emit_led_output",
+    "may_move_stage",
+    "may_open_network",
+    "may_open_serial_port"
+  ]
+}

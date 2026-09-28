@@ -1,0 +1,13 @@
+Fast OFM controller licensing notice
+
+No single license applies to every file in this repository.
+
+Original Fast OFM software, firmware and tests are licensed under the
+PolyForm Noncommercial License 1.0.0. Original documentation, specifications,
+configuration and evidence are licensed under CC BY-NC-SA 4.0. Klipper-derived
+patches and source remain GPL-3.0-only.
+
+See LICENSING.md and REUSE.toml for the authoritative file boundary. Complete
+license texts are stored in LICENSES/.
+
+Copyright 2026 Alexander Fridman.

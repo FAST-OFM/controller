@@ -1,0 +1,49 @@
+board: skr_pico
+profile_state: placeholder
+status: unknown
+mechanics:
+  motor_full_steps_per_rev: unknown
+  configured_microsteps: unknown
+  x_travel_per_rev_mm: unknown
+  y_travel_per_rev_mm: unknown
+  z_travel_per_rev_mm: unknown
+  derived_values:
+    formula: "motor_full_steps_per_rev * microsteps / travel_per_rev_mm"
+    x_steps_per_mm: unknown
+    y_steps_per_mm: unknown
+    z_steps_per_mm: unknown
+    z_steps_per_um: unknown
+    policy: "Derived values remain unknown until source mechanics are verified."
+homing:
+  status: candidate
+  feasibility_outcome:
+    x: unknown
+    y: unknown
+    z: unknown
+  board_revision: unknown
+  stepper_driver_model: unknown
+  driver_feedback_interface: unknown
+  supported_modes:
+    - physical_endstop
+    - driver_assisted_sensorless_if_supported_by_selected_drivers
+    - future_encoder_or_index
+  note: "Do not assume sensorless homing until board revision, driver model, firmware support and safe thresholds are verified."
+pins:
+  x_step: unknown
+  x_dir: unknown
+  x_enable: unknown
+  y_step: unknown
+  y_dir: unknown
+  y_enable: unknown
+  z_step: unknown
+  z_dir: unknown
+  z_enable: unknown
+  x_home: unknown
+  y_home: unknown
+  z_home: unknown
+  camera_or_sync_trigger: unknown
+  camera_trigger: unknown
+  led_white: unknown
+  led_red: unknown
+  led_green: unknown
+  diag0: unknown

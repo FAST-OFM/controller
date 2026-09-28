@@ -1,0 +1,179 @@
+{
+  "schema_id": "firmware_base_phase0_comparison_v1",
+  "schema_version": "1.0.0",
+  "report_id": "firmware-base-phase0-comparison-v1",
+  "generated_at": "2026-07-02T00:00:00Z",
+  "source_fixture": "tests/fixtures/firmware_base_phase0_expected.json",
+  "software_only": true,
+  "hardware_outputs_enabled": false,
+  "live_hardware_access_used": false,
+  "final_firmware_base_selected": false,
+  "recommendation_state": "not_ready_for_final_selection",
+  "candidate_names": [
+    "klipper",
+    "grblhal",
+    "external-rp2040-sync-board"
+  ],
+  "phase0_metadata_gate_passed": true,
+  "common_dry_run_gates": [
+    "phase0_fixture_present",
+    "hardware_outputs_disabled",
+    "all_candidates_feed_common_scheduler",
+    "position_indexed_frame_events_present",
+    "frame_ids_are_contiguous_per_candidate",
+    "stripe_frame_indices_are_contiguous_per_candidate",
+    "coordinate_source_recorded",
+    "trigger_and_led_metadata_recorded"
+  ],
+  "remaining_spike_gates": [
+    "bench_safe_or_no_hardware_timing_result",
+    "position_indexed_output_jitter_measurement",
+    "safe_stop_or_fault_terminal_behavior_per_candidate",
+    "scheduled_z_bidirectional_ack_path",
+    "homing_state_and_coordinate_source_integration",
+    "future_encoder_coordinate_source_path",
+    "fork_or_plugin_maintenance_cost",
+    "approved_live_hardware_procedure_before_outputs"
+  ],
+  "candidates": [
+    {
+      "candidate": "external-rp2040-sync-board",
+      "event_count": 3,
+      "first_frame_id": 0,
+      "last_frame_id": 2,
+      "frame_ids_contiguous": true,
+      "stripe_frame_indices_contiguous": true,
+      "position_axis_values": [
+        "X"
+      ],
+      "coordinate_sources": [
+        "step_indexed"
+      ],
+      "patterns_seen": [
+        "BF_WHITE",
+        "AF_RED_GREEN"
+      ],
+      "led_gate_sets_seen": [
+        [
+          "led_white"
+        ],
+        [
+          "led_red",
+          "led_green"
+        ]
+      ],
+      "trigger_output_names": [
+        "camera_or_sync_trigger"
+      ],
+      "event_positions": [
+        10,
+        20,
+        30
+      ],
+      "sample_positions": [
+        10,
+        20,
+        30
+      ],
+      "mcu_time_us_values": [
+        10,
+        20,
+        30
+      ],
+      "max_position_overshoot_count": 0,
+      "dry_run_adapter_signal": "common_scheduler_fixture_passed",
+      "hardware_outputs_enabled": false,
+      "live_hardware_access_used": false,
+      "passed_phase0_metadata_gate": true
+    },
+    {
+      "candidate": "grblhal",
+      "event_count": 2,
+      "first_frame_id": 0,
+      "last_frame_id": 1,
+      "frame_ids_contiguous": true,
+      "stripe_frame_indices_contiguous": true,
+      "position_axis_values": [
+        "X"
+      ],
+      "coordinate_sources": [
+        "step_indexed"
+      ],
+      "patterns_seen": [
+        "BF_WHITE"
+      ],
+      "led_gate_sets_seen": [
+        [
+          "led_white"
+        ]
+      ],
+      "trigger_output_names": [
+        "camera_or_sync_trigger"
+      ],
+      "event_positions": [
+        25,
+        50
+      ],
+      "sample_positions": [
+        25,
+        50
+      ],
+      "mcu_time_us_values": [
+        25,
+        50
+      ],
+      "max_position_overshoot_count": 0,
+      "dry_run_adapter_signal": "common_scheduler_fixture_passed",
+      "hardware_outputs_enabled": false,
+      "live_hardware_access_used": false,
+      "passed_phase0_metadata_gate": true
+    },
+    {
+      "candidate": "klipper",
+      "event_count": 2,
+      "first_frame_id": 0,
+      "last_frame_id": 1,
+      "frame_ids_contiguous": true,
+      "stripe_frame_indices_contiguous": true,
+      "position_axis_values": [
+        "X"
+      ],
+      "coordinate_sources": [
+        "step_indexed"
+      ],
+      "patterns_seen": [
+        "BF_WHITE",
+        "AF_RED_GREEN"
+      ],
+      "led_gate_sets_seen": [
+        [
+          "led_white"
+        ],
+        [
+          "led_red",
+          "led_green"
+        ]
+      ],
+      "trigger_output_names": [
+        "camera_or_sync_trigger"
+      ],
+      "event_positions": [
+        20,
+        40
+      ],
+      "sample_positions": [
+        20,
+        40
+      ],
+      "mcu_time_us_values": [
+        1000,
+        2000
+      ],
+      "max_position_overshoot_count": 0,
+      "dry_run_adapter_signal": "common_scheduler_fixture_passed",
+      "hardware_outputs_enabled": false,
+      "live_hardware_access_used": false,
+      "passed_phase0_metadata_gate": true
+    }
+  ]
+}

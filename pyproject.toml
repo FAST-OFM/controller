@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scanner-firmware"
+version = "0.1.0"
+description = "Fast OFM controller firmware and scanner-control models"
+requires-python = ">=3.11"
+license = {file = "LICENSES/PolyForm-Noncommercial-1.0.0.txt"}
+authors = [
+  {name = "Alexander Fridman", email = "AlexFridman@outlook.com"},
+]
+dependencies = []
+
+[project.scripts]
+scanner-firmware-config-split = "scanner_firmware.domain.platform_config.cli:main"
+scanner-klipper-decode-events = "scanner_firmware.adapters.klipper_adapter.event_streaming.cli:main"
+scanner-klipper-readiness = "scanner_firmware.adapters.klipper_adapter.readiness.cli:main"
+
+[project.optional-dependencies]
+dev = [
+  "PyYAML>=6.0",
+  "pytest>=8.0",
+  "ruff>=0.5",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+scanner_firmware = [
+  "adapters/klipper_adapter/sync_codec/*.json",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = [
+  "architecture: executable architecture guardrails and patch artifact consistency checks",
+  "contract: protocol, codec, readiness, parser, fixture-shape and host-boundary checks",
+  "integration: multi-module dry-run, replay, backend and planner-to-scheduler checks that remain hardware-free",
+  "unit: focused simulator, model, planner and math tests for the fast edit loop",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

@@ -1,0 +1,52 @@
+board_id: kingroon_mono_v2
+hardware_outputs_armed: false
+aliases:
+  - name: camera_or_sync_trigger
+    pin: PD6
+    status: candidate
+    evidence: likely_current_physical_trigger_from_photo_review_and_prior_multimeter
+    load_status: unknown
+    output_state:
+      active_value: unknown
+      inactive_value: unknown
+    notes:
+      - "E0_STEP control-signal area candidate; do not confuse with the four-pin E0 motor coil connector."
+  - name: led_green
+    pin: PA9
+    status: candidate
+    evidence: no_load_multimeter_probe_wifi_txd1
+    load_status: not_load_tested
+    output_state:
+      active_value: unknown
+      inactive_value: unknown
+    notes:
+      - "Candidate raw logic gate for external LED driver; no load test evidence."
+  - name: led_red
+    pin: PA10
+    status: candidate
+    evidence: no_load_multimeter_probe_wifi_rxd1
+    load_status: not_load_tested
+    output_state:
+      active_value: unknown
+      inactive_value: unknown
+    notes:
+      - "Candidate raw logic gate for external LED driver; no load test evidence."
+  - name: led_white
+    pin: PB13
+    status: candidate
+    evidence: no_load_multimeter_checked_tc1_sck_positive_polarity
+    load_status: not_load_tested
+    output_state:
+      active_value: 1
+      inactive_value: 0
+    notes:
+      - "Candidate raw logic gate for external LED driver; positive polarity was observed no-load."
+rejected_active_pins:
+  - pin: PC4
+    reason: "Legacy Z+ camera_trigger config artifact; current physical trigger is not reviewed on Z+."
+  - pin: PD3
+    reason: "Prior E0_DIR LED candidate superseded by WiFi-header mapping."
+  - pin: "!PB3"
+    reason: "Prior inverted E0_ENABLE LED candidate superseded by WiFi-header mapping."
+  - pin: PB1
+    reason: "Prior FAN white LED candidate superseded by TC1 SCK/PB13 mapping."

@@ -1,0 +1,13 @@
+board: fixture_motion_only
+mechanics:
+  motor_full_steps_per_rev: 400
+  configured_microsteps: 8
+  x_travel_per_rev_mm: 4
+  y_travel_per_rev_mm: 5
+  z_travel_per_rev_mm: 0.25
+  derived_values:
+    formula: "motor_full_steps_per_rev * microsteps / travel_per_rev_mm"
+    x_steps_per_mm: 800
+    y_steps_per_mm: 640
+    z_steps_per_mm: 12800
+    z_steps_per_um: 12.8

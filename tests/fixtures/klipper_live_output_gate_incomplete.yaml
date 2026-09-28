@@ -1,0 +1,86 @@
+live_output_gate:
+  gate_id: stationary-af-timed-output-live-output-gate-v1
+  review_issue_or_pr: scanner-firmware#220
+  live_pi_hostname: UNKNOWN
+  mks_flash_gate_ref: UNKNOWN
+  firmware_artifact:
+    commit: UNKNOWN
+    binary_path: UNKNOWN
+    dictionary_path: UNKNOWN
+    patch_artifact_path: docs/patches/klipper-scanner-sync-timed-output-sequence.patch
+  printer_cfg:
+    active_printer_cfg_path: UNKNOWN
+    baseline_backup_path: UNKNOWN
+  rollback:
+    plan_path: UNKNOWN
+    previous_firmware_artifact: UNKNOWN
+    previous_printer_cfg_backup: UNKNOWN
+  current_state:
+    klipper_service_active: false
+    mks_serial_path_present: false
+    mcu_handshake_restored: false
+    identify_response_timeout_observed: true
+  current_scanner_sync_config:
+    enable: false
+    hardware_outputs_enabled: false
+    output_pins_configured: false
+  proposed_scanner_sync_config:
+    mode: timed_output_sequence_bench
+    enable: true
+    hardware_outputs_enabled: true
+    output_pins_configured: true
+  no_motion_constraints:
+    motors_commanded: false
+    homing_commanded: false
+    z_motion_commanded: false
+    manual_center_required: false
+  timed_output_sequence:
+    command_fixture: UNKNOWN
+    all_outputs_off_fixture: UNKNOWN
+    status_lifecycle_matches_validators: false
+    scanner_sync_stop_guarded_by_active_sequence: false
+    all_outputs_off_is_finite_one_shot: false
+  safe_state:
+    all_outputs_off_command_available: false
+    post_stop_safe_state_required: false
+  outputs:
+    hq_xvs_sync:
+      pin: UNKNOWN
+      connector: UNKNOWN
+      polarity: UNKNOWN
+      load_path: UNKNOWN
+      default_state: UNKNOWN
+      verified_loaded_behavior: false
+      level_shift_reviewed: false
+    led_white_gate:
+      pin: UNKNOWN
+      connector: UNKNOWN
+      polarity: UNKNOWN
+      load_path: UNKNOWN
+      default_state: UNKNOWN
+      verified_loaded_behavior: false
+      external_current_limit_reviewed: false
+    led_red_gate:
+      pin: UNKNOWN
+      connector: UNKNOWN
+      polarity: UNKNOWN
+      load_path: UNKNOWN
+      default_state: UNKNOWN
+      verified_loaded_behavior: false
+      external_current_limit_reviewed: false
+    led_green_gate:
+      pin: UNKNOWN
+      connector: UNKNOWN
+      polarity: UNKNOWN
+      load_path: UNKNOWN
+      default_state: UNKNOWN
+      verified_loaded_behavior: false
+      external_current_limit_reviewed: false
+  stop_conditions:
+    - unexpected_output_state
+  stop_conditions_reviewed: false
+  expected_observation: UNKNOWN
+  live_test_gate:
+    required: true
+    approved: false
+    executed: false

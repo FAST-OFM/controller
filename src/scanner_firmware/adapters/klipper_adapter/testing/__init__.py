@@ -1,0 +1,1 @@
+"""Klipper adapter test doubles."""

@@ -1,0 +1,233 @@
+board: kingroon_mono_v2
+actual_config_name: "MKS Robin Mini v2.0 scanner bring-up config"
+profile_state: pinmap_candidate
+status: board_identity_verified_by_photo_pinmap_candidate_from_existing_klipper_config
+source:
+  host: "pi5"
+  vpn_peer: "192.0.2.13"
+  file: "/home/pi/printer_data/config/printer.cfg"
+  read_date: "2026-06-30"
+  confidence: likely_for_pinmap
+board_identity:
+  manufacturer: Makerbase
+  model_silkscreen: "MKS Robin Mini V2.0"
+  pcb_code: "M-M-B-A-00526"
+  front_photo: "/path/to/board-front.jpg"
+  back_photo: "/path/to/board-back.jpg"
+  confidence: verified_by_photo
+debug_header:
+  visible_labels:
+    - DIO
+    - DCK
+    - 3V3
+    - GND
+  interface: unknown
+  note: "Labels are visible near the MCU on the front photo. Electrical function and flashing/debug procedure are not verified."
+mcu:
+  reported_by_klipper: stm32f103xe
+  clock_hz: 72000000
+  serial: "/dev/serial/by-path/platform-xhci-hcd.1-usb-0:2:1.0-port0"
+  prior_serial_by_id: "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0"
+  prior_serial_by_path: "/dev/serial/by-path/platform-xhci-hcd.0-usb-0:1:1.0-port0"
+  current_serial_by_path_observed: "/dev/serial/by-path/platform-xhci-hcd.1-usb-0:2:1.0-port0"
+  paired_arduino_brightness_controller_by_path_observed: "/dev/serial/by-path/platform-xhci-hcd.1-usb-0:1:1.0-port0"
+  serial_note: "Use physical by-path only while both MKS and Arduino Nano are connected. Both devices enumerate as CH340 with the same non-unique by-id string, so opening /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 can target the wrong device and disrupt Klipper MCU communication."
+  photo_marking_readable: false
+mechanics:
+  motors: NEMA11
+  driver_type: A4988
+  driver_type_source: user_reported_from_documentation
+  motor_full_steps_per_rev: 200
+  x_travel_per_rev_mm: 2
+  y_travel_per_rev_mm: 2
+  z_travel_per_rev_mm: 0.5
+  configured_microsteps: 16
+  derived_values:
+    formula: "motor_full_steps_per_rev * microsteps / travel_per_rev_mm"
+    x_steps_per_mm: 1600
+    y_steps_per_mm: 1600
+    z_steps_per_mm: 6400
+    z_steps_per_um: 6.4
+    policy: "Derived values are outputs from config inputs, not independent source constants."
+  microstepping_notes:
+    active: "1/16 works and is configured in Klipper"
+    attempted_not_working: "1/32"
+observed_bringup_scope:
+  exercised:
+    - x_axis
+    - y_axis
+    - z_axis
+    - e0_step_pd6_hq_xvs_sync_logic_output
+  not_exercised:
+    - led_strobe_outputs
+    - spare_gpio
+    - encoder_inputs
+    - firmware_flashing_or_debug_flow
+    - external_hardware_workflows
+runtime_status_readonly:
+  klippy_state: mcu_connect_timeout_after_hq_xvs_rename
+  observed_date: "2026-07-02"
+  observed_detail: "Klipper host loads the renamed config, /dev/ttyUSB1 is visible, but MKS does not answer identify_response after FIRMWARE_RESTART and Klipper service restart."
+  toolhead_homed_axes: ""
+  steppers_enabled:
+    x: false
+    y: false
+    z: false
+  query_endstops_last_query: {}
+  homing_override:
+    axes: xyz
+    physical_homing: false
+    gcode:
+      - "SET_KINEMATIC_POSITION X=100 Y=100 Z=0"
+      - "G90"
+endstop_readback:
+  command: QUERY_ENDSTOPS
+  motion: false
+  outputs_toggled: false
+  result:
+    stepper_x: 0
+    stepper_y: 0
+    stepper_z: 0
+  toolhead_homed_axes_after_query: ""
+  steppers_enabled_after_query:
+    x: false
+    y: false
+    z: false
+  interpretation: "Readback state only; does not verify physical connector mapping, switch polarity under actuation, repeatability or safe homing."
+pins:
+  x_step: PE3
+  x_dir: PE2
+  x_enable: "!PE4"
+  y_step: PE0
+  y_dir: PB9
+  y_enable: "!PE1"
+  z_step: PB5
+  z_dir: "!PB4"
+  z_enable: "!PB8"
+  x_home: "!PA15"
+  y_home: "!PA12"
+  z_home: "!PA11"
+  motor_current_xy_pwm: PA6
+  motor_current_z_pwm: PA7
+  legacy_position_event_gpio: PC4
+  camera_or_sync_trigger: PD6
+  hq_xvs_sync: PD6
+  e0_step: PD6
+  e0_dir: PD3
+  e0_enable: "!PB3"
+  e0_current_vref_pwm: PB0
+  fan_output: PB1
+  tc1_sck: PB13
+  led_white: PB13
+  wifi_txd1: PA9
+  wifi_rxd1: PA10
+  led_green: PA9
+  led_red: PA10
+safety_status:
+  homing:
+    status: not_exercised
+    config_enabled: false
+    note: "Homing is disabled at the scanner config level. No limit switches are connected, the A4988 path does not provide driver-assisted end-of-travel detection, and the current homing_override only sets kinematic position."
+  legacy_position_event_gpio:
+    status: legacy_config_entry_not_current_physical_trigger
+    connector: Z+
+    measured_high_v: 3.3
+    measured_high_source: user_reported_prior_measurement
+    prior_usage: "Older simple prototype passed a position/event signal to Raspberry Pi GPIO while the camera captured independently."
+    note: "Active config still contains a camera_trigger output_pin on PC4/Z+, but user clarification and photo review indicate the current physical camera/sync trigger wire is on the E0 control-signal area, not on Z+."
+  camera_or_sync_trigger:
+    status: assigned_hq_xvs_sync_output
+    pin: PD6
+    connector_or_pad: E0_STEP_control_signal_area
+    measured_high_v: 3.3
+    measured_high_source: user_multimeter_test_on_2026_07_02
+    config_section: output_pin hq_xvs_sync
+    macros:
+      - HQ_XVS_HIGH
+      - HQ_XVS_LOW
+      - HQ_XVS_PULSE
+      - HQ_XVS_TEST_TRAIN
+    note: "Photo review shows the trigger wire in the E0 control-signal area. This signal is now named for HQ Camera XVS sync. It is 3.3 V at the MKS pin and must pass through the approved 3.3 V-to-1.8 V level shifter before HQ XVS. Do not confuse this with the 4-pin E0 motor coil connector."
+  led_outputs:
+    status: partially_identified_no_load_multimeter
+    led_green:
+      pin: PA9
+      source_signal: WiFi_TXD1
+      measured_high_v: 3.3
+      measured_high_source: user_multimeter_during_probe
+      output_type: raw_logic_control
+      led_rated_current_ma: 100
+      geometry:
+        objective: 20x
+        lateral_offset_from_optical_center_mm: 10
+        distance_from_tissue_plane_mm: 35
+        placement_angle_deg: 16
+        applies_to_objectives:
+          - 20x
+        must_not_reuse_for_objectives:
+          - 40x
+      load_tested: false
+      note: "Assigned as green LED gate after WiFi-header no-load probe. Current 20x LED geometry uses a 100 mA-class LED at 10 mm lateral offset, 35 mm from tissue plane and 16 degree placement angle. Requires external MOSFET/transistor and LED current limiting."
+    led_red:
+      pin: PA10
+      source_signal: WiFi_RXD1
+      measured_high_v: 3.3
+      measured_high_source: user_multimeter_during_probe
+      output_type: raw_logic_control
+      led_rated_current_ma: 100
+      geometry:
+        objective: 20x
+        lateral_offset_from_optical_center_mm: 10
+        distance_from_tissue_plane_mm: 35
+        placement_angle_deg: 16
+        applies_to_objectives:
+          - 20x
+        must_not_reuse_for_objectives:
+          - 40x
+      load_tested: false
+      note: "Assigned as red LED gate after WiFi-header no-load probe. Current 20x LED geometry uses a 100 mA-class LED at 10 mm lateral offset, 35 mm from tissue plane and 16 degree placement angle. Requires external MOSFET/transistor and LED current limiting."
+    led_white:
+      pin: PB13
+      source_signal: TC1_SCK
+      output_type: raw_logic_control
+      active_polarity: positive
+      active_value: 1
+      inactive_value: 0
+      load_tested: false
+      status: assigned_no_load_multimeter_checked_tc1_header
+      note: "Assigned as white LED gate through TC1 SCK/PB13 after physical blink probe. Requires external MOSFET/transistor and LED current limiting."
+    e0_vref:
+      pin: PB0
+      source_signal: E0_VREF
+      status: not_usable_for_led_gate
+      measured_when_commanded_high_v: 0
+      measured_source: user_multimeter_during_probe
+      note: "Klipper probe readback reached VALUE=1, but measured output stayed 0 V. Do not use PB0/E0_VREF as LED gate."
+    superseded_e0_led_candidates:
+      led_green_prior:
+        pin: PD3
+        source_signal: E0_DIR
+        status: superseded_by_wifi_header_mapping
+      led_red_prior:
+        pin: "!PB3"
+        source_signal: E0_ENABLE
+        status: superseded_by_wifi_header_mapping
+        note: "Active-low/inverted E0 enable path; avoid for LED gate unless explicitly needed."
+      led_white_prior:
+        pin: PB1
+        source_signal: FAN
+        status: superseded_by_tc1_sck_mapping
+        note: "Board fan/MOSFET load output; no longer the primary white LED gate."
+open_unknowns:
+  - exact marketed Kingroon machine/controller variant
+  - exact stepper driver chip markings hidden under heatsinks
+  - flashing/debug method
+  - physical connector mapping
+  - working homing method on the current board
+  - whether PC4/Z+ should be removed from active config or retained only as a disabled diagnostic
+  - exact physical pad/testpoint used for PD6/E0_STEP trigger wire
+  - MKS connect timeout root cause after the HQ XVS config rename and serial path update
+  - measured IO voltage levels beyond prior PD6/E0_STEP, PC4/Z+, PA9/WiFi TXD1, PA10/WiFi RXD1 and PB13/TC1 SCK checks
+  - safe dummy-load test for PA9/PA10/PB13 LED candidates
+  - TC1 SCK/PB13 boot/reset state
+  - unresolved TC1 CS mapping; PB12 and PD15 did not blink the physical CS terminal during no-load probe

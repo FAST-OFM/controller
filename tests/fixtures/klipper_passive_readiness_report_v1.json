@@ -1,0 +1,141 @@
+{
+  "schema_id": "passive_klipper_scanner_sync_readiness_v1",
+  "schema_version": "1.0.0",
+  "report_id": "passive-klipper-scanner-sync-readiness-v1",
+  "generated_at": "2026-07-02T00:00:00Z",
+  "software_only": true,
+  "hardware_outputs_enabled": false,
+  "live_hardware_access_used": false,
+  "scanner_sync_enabled_by_report": false,
+  "ready_for_passive_metadata": true,
+  "ready_for_live_hardware": false,
+  "blockers": [],
+  "inputs": {
+    "dictionary_path": "klipper_passive_readiness_dictionary_v1.txt",
+    "scanner_sync_config_path": "klipper_passive_readiness_scanner_sync_config_v1.cfg",
+    "stage_b_review_path": "klipper_stage_b_review_complete.yaml",
+    "capture_jsonl_path": "scanner_sync_stage_b_metadata_capture_v1.jsonl"
+  },
+  "dictionary": {
+    "config_format_present": true,
+    "has_all_required_commands": true,
+    "has_all_required_responses": true,
+    "command_formats": [
+      "scanner_sync_arm_af_window oid=%c seq=%u stripe_id=%u frame_id=%u stripe_frame_index=%u position_axis=%c trigger_position_count=%i pattern_id=%u settle_us=%u xvs_trigger_pulse_us=%u exposure_hold_us=%u",
+      "scanner_sync_fire_af_window_now oid=%c seq=%u stripe_id=%u frame_id=%u stripe_frame_index=%u position_axis=%c event_position_count=%i pattern_id=%u settle_us=%u xvs_trigger_pulse_us=%u exposure_hold_us=%u",
+      "scanner_sync_run_stationary_af_test oid=%c seq=%u stripe_id=%u first_frame_id=%u frame_count=%u frame_period_us=%u position_axis=%c event_position_count=%i pattern_id=%u settle_us=%u xvs_trigger_pulse_us=%u exposure_hold_us=%u",
+      "scanner_sync_schedule_z oid=%c seq=%u stripe_id=%u target_kind=%c target_value=%i z_target_nm=%i",
+      "scanner_sync_start oid=%c next_frame_id=%u",
+      "scanner_sync_stop oid=%c reason=%c"
+    ],
+    "response_formats": [
+      "scanner_sync_frame_event oid=%c frame_id=%u stripe_id=%u stripe_frame_index=%u pattern_id=%u position_axis=%c event_position=%i x_count=%i y_count=%i z_count=%i mcu_time_us=%u status=%c flags=%u",
+      "scanner_sync_scheduler_terminal oid=%c stripe_id=%u status=%c reason=%c emitted_frame_count=%u expected_frame_count=%u last_frame_id=%i next_frame_id=%u next_stripe_frame_index=%u mcu_time_us=%u",
+      "scanner_sync_z_applied oid=%c seq=%u frame_id=%u z_cmd_count=%i status=%c",
+      "scanner_sync_z_rejected oid=%c seq=%u reason=%c status=%c",
+      "scanner_sync_z_scheduled oid=%c seq=%u stripe_id=%u status=%c"
+    ],
+    "missing_command_formats": [],
+    "missing_response_formats": []
+  },
+  "config": {
+    "section_present": true,
+    "enable": true,
+    "protocol_version": 1,
+    "metadata_only_mode": true,
+    "safety_fields_present": true,
+    "hardware_outputs_enabled": false,
+    "configured_output_keys": [],
+    "output_pins_configured": false
+  },
+  "live_metadata_readiness": {
+    "stage": "ready_to_enable",
+    "status": "ready",
+    "can_enable_scanner_sync": true,
+    "blockers": [],
+    "missing_command_formats": [],
+    "missing_response_formats": []
+  },
+  "stage_b_review": {
+    "readiness_state": "passive_observation_ready",
+    "review_accepted": true,
+    "blockers": [],
+    "static_simulator_only": true,
+    "live_testing_approved": false,
+    "can_execute_live_stage_b": false,
+    "can_enable_scanner_sync": false,
+    "observation": {
+      "reviewer": "firmware-reviewer",
+      "review_issue_or_pr": "https://example.invalid/fast-ofm/review/85",
+      "live_pi_hostname": "pi5",
+      "klipper_commit": "c707dd19214709dc23684b254a68e3bf69e4cfb3",
+      "scanner_sync_enable": true,
+      "metadata_only_mode": true,
+      "hardware_outputs_enabled": false,
+      "output_pins_configured": false,
+      "expected_capture_jsonl_path": "captures/stage-b/scanner-sync-events.jsonl",
+      "expected_summary_json_path": "captures/stage-b/scanner-sync-summary.json",
+      "expected_record_count": 7,
+      "expected_frame_count": 5,
+      "expected_terminal_count": 1,
+      "expected_first_frame_id": 1360,
+      "expected_last_frame_id": 1364,
+      "expected_stripes_seen": [
+        6
+      ]
+    }
+  },
+  "event_stream": {
+    "accepted": true,
+    "record_count": 7,
+    "event_types": [
+      "FRAME_EVENT",
+      "Z_SCHEDULED",
+      "FRAME_EVENT",
+      "Z_APPLIED",
+      "FRAME_EVENT",
+      "Z_REJECTED",
+      "SCHEDULER_TERMINAL"
+    ],
+    "frame_count": 3,
+    "terminal_count": 1,
+    "first_frame_id": 1360,
+    "last_frame_id": 1362,
+    "next_frame_id": 1363,
+    "stripes_seen": [
+      6
+    ],
+    "timed_output_sequence_status_count": 0,
+    "z_scheduled_count": 1,
+    "z_applied_count": 1,
+    "z_rejected_count": 1,
+    "z_outcomes": [
+      {
+        "seq": 13600,
+        "outcome": "applied",
+        "scan_id": "stage-b-synthetic-scanner-sync-metadata-capture",
+        "stripe_id": 6,
+        "command_id": "stage-b-z-frame-1362",
+        "apply_target_kind": null,
+        "apply_at_frame_id": null,
+        "apply_at_position_count": null,
+        "applied_frame_id": 1362,
+        "applied_position": null,
+        "z_target_steps": 32
+      },
+      {
+        "seq": 13601,
+        "outcome": "rejected",
+        "scan_id": "stage-b-synthetic-scanner-sync-metadata-capture",
+        "stripe_id": 6,
+        "command_id": "stage-b-z-too-late",
+        "apply_target_kind": null,
+        "apply_at_frame_id": null,
+        "apply_at_position_count": null,
+        "applied_frame_id": null,
+        "applied_position": null,
+        "z_target_steps": null
+      }
+    ]
+  }
+}

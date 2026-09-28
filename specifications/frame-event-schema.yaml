@@ -1,0 +1,227 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+title: MCU Frame Event
+description: >-
+  Canonical protocol v1 schema for one MCU-originated camera trigger identity
+  record. FRAME_EVENT is a fact record for a trigger/illumination window that
+  the MCU reached and emitted; it is not an early advisory or planning record.
+  Future lookahead records must use distinct types such as FRAME_PLANNED or
+  FRAME_ARMED.
+# Protocol v1 is retained for existing replay/producer compatibility. New
+# recipe-compiled acquisition also requires the semantic FRAME_EVENT projection
+# in capture-recipe-and-illumination-program.md; a v1-only event cannot satisfy
+# that bundle gate.
+version: 1.0.0
+type: object
+additionalProperties: false
+
+required:
+  - type
+  - protocol_version
+  - scan_id
+  - stripe_id
+  - frame_id
+  - stripe_frame_index
+  - pattern
+  - coordinate_source_used
+  - position_axis
+  - event_position
+  - sample_position
+  - position_overshoot_count
+  - x_count
+  - y_count
+  - z_count
+  - x_step_commanded
+  - y_step_commanded
+  - z_step_commanded
+  - x_encoder_count
+  - y_encoder_count
+  - z_encoder_count
+  - z_state
+  - z_command_seq
+  - coordinate_flags
+  - mcu_time_us
+  - status
+
+properties:
+  type:
+    const: FRAME_EVENT
+    description: >-
+      Event type for an emitted frame trigger identity record. Do not send
+      FRAME_EVENT before the trigger/illumination window has actually been
+      reached and emitted.
+  protocol_version:
+    const: "1.0.0"
+  scan_id:
+    type: string
+    minLength: 1
+  stripe_id:
+    oneOf:
+      - type: integer
+      - type: string
+        minLength: 1
+  frame_id:
+    type: integer
+    minimum: 0
+    description: Globally monotonic frame event ID within a scan.
+  stripe_frame_index:
+    type: integer
+    minimum: 0
+    description: Zero-based frame index within stripe_id.
+  pattern:
+    type: string
+    enum:
+      - BF_WHITE
+      - AF_RED_GREEN
+      - AF_GREEN_RED
+      - AF_BLUE_GREEN
+      - AF_GREEN_BLUE
+      - DARK
+      - CUSTOM
+  coordinate_source_used:
+    type: string
+    enum:
+      - step_indexed
+      - encoder_indexed
+      - hybrid
+    description: Coordinate source used to resolve x_count/y_count/z_count for this event.
+  position_axis:
+    type: string
+    enum:
+      - X
+      - Y
+    description: Axis whose scheduled position caused the frame event.
+  event_position:
+    type: integer
+    description: Scheduled position on position_axis that caused this event.
+  sample_position:
+    type: integer
+    description: Sampled position on position_axis when the scheduler crossed event_position.
+  position_overshoot_count:
+    type: integer
+    description: Signed sample_position minus event_position.
+  x_count:
+    type: integer
+    description: Resolved X event coordinate for coordinate_source_used.
+  y_count:
+    type: integer
+    description: Resolved Y event coordinate for coordinate_source_used.
+  z_count:
+    type: integer
+    description: Resolved Z event coordinate for coordinate_source_used.
+  x_step_commanded:
+    type: integer
+    description: Raw commanded X step/count sample.
+  y_step_commanded:
+    type: integer
+    description: Raw commanded Y step/count sample.
+  z_step_commanded:
+    type: integer
+    description: Raw commanded Z step/count sample.
+  x_encoder_count:
+    type:
+      - integer
+      - "null"
+    description: X encoder count sampled for this event, or null when unavailable.
+  y_encoder_count:
+    type:
+      - integer
+      - "null"
+    description: Y encoder count sampled for this event, or null when unavailable.
+  z_encoder_count:
+    type:
+      - integer
+      - "null"
+    description: Z encoder/fine-Z feedback count sampled for this event, or null when unavailable.
+  z_state:
+    type: string
+    enum:
+      - not_requested
+      - pending
+      - settling
+      - settled
+      - rejected
+      - unknown
+    description: Scheduler-visible Z state at the frame event position.
+  z_command_seq:
+    type:
+      - integer
+      - "null"
+    minimum: 0
+    description: Most recent relevant schedule-Z command seq, or null when no command is relevant.
+  coordinate_flags:
+    type: array
+    uniqueItems: true
+    items:
+      type: string
+      enum:
+        - encoder_missing
+        - encoder_stale
+        - step_fallback
+        - overshoot_nonzero
+        - z_pending
+        - z_rejected
+        - diagnostic_only
+    description: Machine-readable coordinate and Z warnings attached to this event.
+  mcu_time_us:
+    type: integer
+    minimum: 0
+    description: MCU-local diagnostic timestamp; not the same clock domain as camera timestamps unless calibrated.
+  trigger_pulse_us:
+    type:
+      - number
+      - "null"
+    minimum: 0
+  led_pattern_id:
+    type:
+      - string
+      - "null"
+  led_pulse_us:
+    type:
+      - number
+      - "null"
+    minimum: 0
+  expected_camera_frame:
+    type:
+      - integer
+      - "null"
+    minimum: 0
+    description: Optional expected camera sequence number if the camera stack provides a comparable sequence.
+  status:
+    type: string
+    enum:
+      - OK
+      - WARNING
+      - DIAGNOSTIC
+      - INVALID
+
+example:
+  type: FRAME_EVENT
+  protocol_version: "1.0.0"
+  scan_id: scan_001
+  stripe_id: 42
+  frame_id: 1842
+  stripe_frame_index: 17
+  pattern: AF_RED_GREEN
+  coordinate_source_used: step_indexed
+  position_axis: X
+  event_position: 1234567
+  sample_position: 1234567
+  position_overshoot_count: 0
+  x_count: 1234567
+  y_count: 89012
+  z_count: 3456
+  x_step_commanded: 1234567
+  y_step_commanded: 89012
+  z_step_commanded: 3456
+  x_encoder_count: null
+  y_encoder_count: null
+  z_encoder_count: null
+  z_state: settled
+  z_command_seq: 101
+  coordinate_flags: []
+  mcu_time_us: 987654321
+  trigger_pulse_us: 10
+  led_pattern_id: af_rg_v1
+  led_pulse_us: 80
+  expected_camera_frame: null
+  status: OK

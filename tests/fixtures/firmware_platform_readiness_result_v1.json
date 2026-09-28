@@ -1,0 +1,172 @@
+{
+  "schema_id": "platform_readiness_result_v1",
+  "schema_version": "1.1.0",
+  "generated_at": "2026-07-02T00:00:00Z",
+  "owner_repo": "scanner-firmware",
+  "target": "scanner-firmware-simulator-static-readiness",
+  "readiness_state": "safe_disabled",
+  "hardware_outputs_enabled": false,
+  "live_test_approval": {
+    "required": false,
+    "approved": false,
+    "issue_or_pr": null
+  },
+  "reasons": [
+    {
+      "code": "board_homing_incomplete",
+      "domain": "board",
+      "category": "unknown",
+      "severity": "p0",
+      "evidence": "software-only startup self-check input",
+      "message": "Homing is incomplete or unverified; firmware readiness must not infer physical board readiness."
+    },
+    {
+      "code": "board_homing_feasibility_unknown",
+      "domain": "board",
+      "category": "unknown",
+      "severity": "p0",
+      "evidence": "software-only startup self-check input",
+      "message": "Live homing feasibility is unknown without verified controller, switch and motion evidence."
+    },
+    {
+      "code": "scanner_sync_metadata_not_ready",
+      "domain": "scanner_sync",
+      "category": "unknown",
+      "severity": "p0",
+      "evidence": "tests/fixtures/frame_event_replay_protocol_v1.jsonl",
+      "message": "Scanner-sync metadata readiness is not proven by passive software evidence."
+    },
+    {
+      "code": "live_test_approval_not_granted",
+      "domain": "live_test_gate",
+      "category": "safety_gate",
+      "severity": "p0",
+      "evidence": "scanner-docs/governance/live-test-approval-gate.md",
+      "message": "This firmware readiness result does not approve firmware flashing, GPIO, motion, LEDs, camera triggers or live controller commands."
+    }
+  ],
+  "checks": [
+    {
+      "id": "firmware_config_schema",
+      "status": "pass",
+      "scope": "config",
+      "evidence": "tests/fixtures/firmware_config_split_valid.json",
+      "message": "Firmware config schema accepted."
+    },
+    {
+      "id": "platform_profile",
+      "status": "pass",
+      "scope": "config",
+      "evidence": "tests/fixtures/board_profile_kinematics_fixture.yaml",
+      "message": "Platform profile accepted by software-only validation."
+    },
+    {
+      "id": "printer_config_present",
+      "status": "pass",
+      "scope": "config",
+      "evidence": "tests/fixtures/firmware_config_split_valid.json",
+      "message": "Controller/printer configuration is present."
+    },
+    {
+      "id": "safe_defaults_declared",
+      "status": "pass",
+      "scope": "config",
+      "evidence": "tests/fixtures/firmware_config_split_valid.json",
+      "message": "Output safe defaults are declared."
+    },
+    {
+      "id": "inactive_outputs_declared",
+      "status": "pass",
+      "scope": "config",
+      "evidence": "tests/fixtures/firmware_config_split_valid.json",
+      "message": "Inactive output state is declared."
+    },
+    {
+      "id": "output_ownership_unambiguous",
+      "status": "pass",
+      "scope": "interface_binding",
+      "evidence": "tests/fixtures/firmware_config_split_valid.json",
+      "message": "Output ownership is unambiguous."
+    },
+    {
+      "id": "camera_mode_config",
+      "status": "pass",
+      "scope": "config",
+      "evidence": "tests/fixtures/firmware_config_split_valid.json",
+      "message": "Referenced camera mode config is accepted by startup inputs."
+    },
+    {
+      "id": "camera_crop_config",
+      "status": "pass",
+      "scope": "config",
+      "evidence": "tests/fixtures/firmware_config_split_valid.json",
+      "message": "Referenced camera crop config is accepted by startup inputs."
+    },
+    {
+      "id": "scanner_sync_metadata",
+      "status": "blocked",
+      "scope": "protocol",
+      "evidence": "tests/fixtures/frame_event_replay_protocol_v1.jsonl",
+      "message": "scanner_sync_metadata is not satisfied."
+    },
+    {
+      "id": "scan_preflight",
+      "status": "pass",
+      "scope": "protocol",
+      "evidence": "tests/fixtures/frame_event_replay_protocol_v1.jsonl",
+      "message": "Scan preflight accepted the dry-run plan."
+    },
+    {
+      "id": "homing_status",
+      "status": "blocked",
+      "scope": "homing",
+      "evidence": "software-only startup self-check input",
+      "message": "homing_status is not satisfied."
+    },
+    {
+      "id": "hardware_outputs_disabled",
+      "status": "pass",
+      "scope": "live_test_gate",
+      "evidence": "software-only startup self-check input",
+      "message": "Hardware outputs remain disabled."
+    },
+    {
+      "id": "live_test_approval_gate",
+      "status": "pass",
+      "scope": "live_test_gate",
+      "evidence": "scanner-docs/governance/live-test-approval-gate.md",
+      "message": "No live test is approved or executed by this software-only record."
+    }
+  ],
+  "unknowns": [
+    {
+      "field": "homing.completion",
+      "reason": "Homing is incomplete or unverified; software-only readiness does not command motion or home axes."
+    },
+    {
+      "field": "homing.feasibility_status",
+      "reason": "Live homing feasibility is unknown because no controller, switch or motion probing is performed."
+    },
+    {
+      "field": "scanner_sync.live_metadata_binding",
+      "reason": "Scanner-sync live metadata readiness is not proven without live Klipper or controller discovery."
+    }
+  ],
+  "blockers": [
+    {
+      "id": "scanner_sync_metadata_not_ready",
+      "severity": "p0",
+      "message": "Scanner-sync metadata readiness is not proven; live controller probing is outside this software-only result."
+    },
+    {
+      "id": "homing_incomplete",
+      "severity": "p0",
+      "message": "Homing remains incomplete or unverified and must not be assumed by firmware readiness."
+    },
+    {
+      "id": "homing_feasibility_unknown",
+      "severity": "p0",
+      "message": "Homing feasibility is unknown without live hardware validation."
+    }
+  ]
+}

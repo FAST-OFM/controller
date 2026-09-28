@@ -1,0 +1,71 @@
+schema_version: 2
+firmware:
+  sketch: led_brightness_controller.ino
+  config_version: 6
+  target_board: arduino_nano_atmega328p_old_bootloader
+  serial_baud: 115200
+  pwm_frequency_hz: 62500
+  adc_reference_mv: 1100
+  adc_samples: 16
+  state: review_only_unarmed
+  hardware_report_command: HARDWARE
+  notes:
+    - Pin mapping is compile-time hardware configuration, not EEPROM state.
+    - Firmware config v6 contains calibration evidence and PWM-to-current map evidence only.
+    - No command may energize an output; GET always reports zero PWM and ARMED=0.
+    - Legacy v5 PWM brightness and retained RAM state are never restored.
+channels:
+  red:
+    logical_name: RED
+    pwm_output: { arduino_pin: D9, avr_timer: Timer1, timer_output: OC1A }
+    sense_input: { arduino_pin: A0, sense_resistor_milliohm: 12000 }
+    target_artifact_channel: RED
+  green:
+    logical_name: GREEN
+    pwm_output: { arduino_pin: D10, avr_timer: Timer1, timer_output: OC1B }
+    sense_input: { arduino_pin: A1, sense_resistor_milliohm: 12000 }
+    target_artifact_channel: GREEN
+  white:
+    logical_name: WHITE
+    pwm_output: { arduino_pin: D3, avr_timer: Timer2, timer_output: OC2B }
+    sense_input: { arduino_pin: A2, sense_resistor_milliohm: 12000 }
+    target_artifact_channel: WHITE_BF
+runtime_protocol:
+  read_only:
+    - GET
+    - GETCAL
+    - CAL GET
+    - CAL MAP GET
+  safe_zero:
+    - ZERO
+    - LOAD
+  calibration_storage_only:
+    - CAL SET <channel> <min_pwm> <max_pwm> [threshold_ma_x100] [SAVE]
+    - CAL MAP SET <channel> <artifact_version> <low_pwm> <low_ma_x100> <high_pwm> <high_ma_x100> [SAVE]
+  rejected_unarmed:
+    - SET
+    - SETC
+    - ARM
+    - ENABLE
+    - CAL FIND
+eeprom_behavior:
+  v6:
+    contents: calibration ranges plus per-channel versioned map evidence
+    checksum: xor over serialized v6 record
+    command_brightness_storage: forbidden
+  v5_migration:
+    requires: valid legacy checksum
+    preserves: min_pwm, max_pwm, threshold_ma_x100
+    discards: saved RED/GREEN/WHITE PWM including 255 values
+    resulting_outputs: { red_pwm: 0, green_pwm: 0, white_pwm: 0, armed: false }
+future_enable_gate:
+  status: absent_pending_separate_review
+  required_inputs:
+    - versioned host current target artifact
+    - versioned per-channel PWM-to-current map
+    - target reachability inside measured map range
+  forbidden_shortcut: legacy min_pwm/max_pwm is not a PWM-to-current map
+safety_notes:
+  - Arduino PWM outputs are VREF references, not LED current sources.
+  - Timing MCU gate timing remains separate from this unarmed calibration contract.
+  - This file grants no flash, serial, or hardware-output authorization.

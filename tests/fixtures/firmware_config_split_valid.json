@@ -1,0 +1,54 @@
+{
+  "controller": {
+    "kind": "klipper_mks",
+    "printer_config_present": true,
+    "safe_defaults_declared": true
+  },
+  "io": {
+    "inactive_output_states_declared": true,
+    "output_ownership_unambiguous": true
+  },
+  "motion": {
+    "coordinate_source_valid": true,
+    "homed_axes_required": [
+      "X",
+      "Y",
+      "Z"
+    ],
+    "homing_enabled": false,
+    "homing_feasibility_status": "not_implemented",
+    "soft_limits_configured": true
+  },
+  "motor_controller": {
+    "axes": [
+      "X",
+      "Y",
+      "Z"
+    ],
+    "abstraction": "controller_adapter"
+  },
+  "profile": {
+    "board_id": "kingroon_mono_v2"
+  },
+  "protocol": {
+    "events": [
+      "FRAME_EVENT",
+      "SCHEDULER_TERMINAL",
+      "Z_SCHEDULED",
+      "Z_APPLIED",
+      "Z_REJECTED"
+    ],
+    "trigger_output_name": "camera_or_sync_trigger",
+    "version": 1
+  },
+  "scanner_sync": {
+    "metadata_only_mode": true,
+    "protocol_version": 1
+  },
+  "scheduler": {
+    "predictive_z": {
+      "target_policy": "future_frame_or_position_only"
+    },
+    "trigger_source": "mcu_frame_event"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "accepted": true,
+  "event_types": [
+    "FRAME_EVENT",
+    "Z_SCHEDULED",
+    "FRAME_EVENT",
+    "Z_APPLIED",
+    "FRAME_EVENT",
+    "Z_REJECTED",
+    "SCHEDULER_TERMINAL"
+  ],
+  "first_frame_id": 1360,
+  "frame_count": 3,
+  "last_frame_id": 1362,
+  "next_frame_id": 1363,
+  "record_count": 7,
+  "stripes_seen": [
+    6
+  ],
+  "terminal_count": 1,
+  "timed_output_sequence_status_count": 0,
+  "z_applied_count": 1,
+  "z_outcomes": [
+    {
+      "applied_frame_id": 1362,
+      "applied_position": null,
+      "apply_at_frame_id": null,
+      "apply_at_position_count": null,
+      "apply_target_kind": null,
+      "command_id": "stage-b-z-frame-1362",
+      "outcome": "applied",
+      "scan_id": "stage-b-synthetic-scanner-sync-metadata-capture",
+      "seq": 13600,
+      "stripe_id": 6,
+      "z_target_steps": 32
+    },
+    {
+      "applied_frame_id": null,
+      "applied_position": null,
+      "apply_at_frame_id": null,
+      "apply_at_position_count": null,
+      "apply_target_kind": null,
+      "command_id": "stage-b-z-too-late",
+      "outcome": "rejected",
+      "scan_id": "stage-b-synthetic-scanner-sync-metadata-capture",
+      "seq": 13601,
+      "stripe_id": 6,
+      "z_target_steps": null
+    }
+  ],
+  "z_rejected_count": 1,
+  "z_scheduled_count": 1
+}

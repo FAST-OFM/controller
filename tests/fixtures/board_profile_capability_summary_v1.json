@@ -1,0 +1,129 @@
+{
+  "blockers": [
+    "pinmap_not_verified",
+    "camera_or_sync_trigger_boot_default_unknown",
+    "led_green_load_not_tested",
+    "led_green_boot_default_unknown",
+    "led_red_load_not_tested",
+    "led_red_boot_default_unknown",
+    "led_white_load_not_tested",
+    "led_white_boot_default_unknown",
+    "homing_not_enabled",
+    "homing_not_verified",
+    "controller_discovery_static_only"
+  ],
+  "board": "kingroon_mono_v2",
+  "camera_or_sync_trigger": {
+    "alias": "camera_or_sync_trigger",
+    "blocked": true,
+    "boot_default_state": "unknown",
+    "capability": "camera_or_sync_trigger_candidate",
+    "load_tested": null,
+    "measured_high_v": 3.3,
+    "output_type": null,
+    "pin": "PD6",
+    "source_signal": null,
+    "status": "assigned_hq_xvs_sync_output"
+  },
+  "capabilities": [
+    "motion_kinematics",
+    "camera_or_sync_trigger_candidate",
+    "led_gate_candidates",
+    "homing_config_disabled",
+    "controller_discovery_static_only"
+  ],
+  "controller_discovery": {
+    "controller_kind": "klipper",
+    "hardware_outputs_enabled": false,
+    "live_access_performed": false,
+    "printer_config_present": true,
+    "status": "static_only"
+  },
+  "hardware_outputs_enabled": false,
+  "homing": {
+    "config_enabled": false,
+    "status": "not_exercised"
+  },
+  "led_outputs": [
+    {
+      "alias": "led_green",
+      "blocked": true,
+      "boot_default_state": "unknown",
+      "capability": "led_gate_candidate",
+      "load_tested": false,
+      "measured_high_v": 3.3,
+      "output_type": "raw_logic_control",
+      "pin": "PA9",
+      "source_signal": "WiFi_TXD1",
+      "status": "partially_identified_no_load_multimeter"
+    },
+    {
+      "alias": "led_red",
+      "blocked": true,
+      "boot_default_state": "unknown",
+      "capability": "led_gate_candidate",
+      "load_tested": false,
+      "measured_high_v": 3.3,
+      "output_type": "raw_logic_control",
+      "pin": "PA10",
+      "source_signal": "WiFi_RXD1",
+      "status": "partially_identified_no_load_multimeter"
+    },
+    {
+      "alias": "led_white",
+      "blocked": true,
+      "boot_default_state": "unknown",
+      "capability": "led_gate_candidate",
+      "load_tested": false,
+      "measured_high_v": null,
+      "output_type": "raw_logic_control",
+      "pin": "PB13",
+      "source_signal": "TC1_SCK",
+      "status": "assigned_no_load_multimeter_checked_tc1_header"
+    }
+  ],
+  "live_hardware_access_used": false,
+  "motion_kinematics": {
+    "x": {
+      "microsteps": 16,
+      "motor_full_steps_per_rev": 200,
+      "steps_per_mm": 1600,
+      "steps_per_um": 1.6,
+      "travel_per_rev_mm": 2
+    },
+    "y": {
+      "microsteps": 16,
+      "motor_full_steps_per_rev": 200,
+      "steps_per_mm": 1600,
+      "steps_per_um": 1.6,
+      "travel_per_rev_mm": 2
+    },
+    "z": {
+      "microsteps": 16,
+      "motor_full_steps_per_rev": 200,
+      "steps_per_mm": 6400,
+      "steps_per_um": 6.4,
+      "travel_per_rev_mm": 0.5
+    }
+  },
+  "open_unknowns": [
+    "exact marketed Kingroon machine/controller variant",
+    "exact stepper driver chip markings hidden under heatsinks",
+    "flashing/debug method",
+    "physical connector mapping",
+    "working homing method on the current board",
+    "whether PC4/Z+ should be removed from active config or retained only as a disabled diagnostic",
+    "exact physical pad/testpoint used for PD6/E0_STEP trigger wire",
+    "MKS connect timeout root cause after the HQ XVS config rename and serial path update",
+    "measured IO voltage levels beyond prior PD6/E0_STEP, PC4/Z+, PA9/WiFi TXD1, PA10/WiFi RXD1 and PB13/TC1 SCK checks",
+    "safe dummy-load test for PA9/PA10/PB13 LED candidates",
+    "TC1 SCK/PB13 boot/reset state",
+    "unresolved TC1 CS mapping; PB12 and PD15 did not blink the physical CS terminal during no-load probe"
+  ],
+  "profile_state": "pinmap_candidate",
+  "profile_valid": true,
+  "ready_for_live_hardware": false,
+  "ready_for_output_simulation": true,
+  "schema_id": "board_profile_capability_summary_v1",
+  "schema_version": "1.0.0"
+}

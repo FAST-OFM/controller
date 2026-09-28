@@ -1,0 +1,20 @@
+schema_version: 1
+artifact_id: fast-ofm-led-current-targets-v1
+status: review_only_unarmed
+units:
+  current: mA
+  encoded_current: mA_x100
+channels:
+  WHITE_BF:
+    target_ma: 300.00
+    target_ma_x100: 30000
+  RED:
+    target_ma: 100.00
+    target_ma_x100: 10000
+  GREEN:
+    target_ma: 100.00
+    target_ma_x100: 10000
+constraints:
+  - Target values are host/versioned-calibration inputs, never raw PWM values.
+  - A target is unusable until a versioned per-channel PWM-to-current artifact proves reachability.
+  - This review-only artifact does not arm, enable, or authorize physical output.

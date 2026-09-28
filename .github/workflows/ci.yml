@@ -1,0 +1,28 @@
+name: Source validation
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  controller:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install license checker
+        run: python -m pip install --upgrade pip reuse==5.1.1
+      - name: Verify file-level licensing
+        run: reuse lint
+      - name: Install controller package and test tools
+        run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q
+      - name: Check the LED current-safety contract without hardware
+        working-directory: arduino/led_brightness_controller
+        run: make host-test

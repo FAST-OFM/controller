@@ -1,0 +1,55 @@
+stage_b_review:
+  reviewer: "firmware-reviewer"
+  review_issue_or_pr: "https://example.invalid/fast-ofm/review/85"
+  live_pi_hostname: "pi5"
+  klipper_commit: "c707dd19214709dc23684b254a68e3bf69e4cfb3"
+  klipper_worktree_status: "master...origin/master with reviewed scanner_sync patch"
+  scanner_sync_host_extra_diff: "docs/patches/klipper-scanner-sync-phase2-metadata-only.patch"
+  scanner_sync_mcu_patch_diff: "docs/patches/klipper-scanner-sync-phase2-metadata-only.patch"
+  mks_board_identity:
+    board_name: "MKS Robin Nano compatible STM32F103"
+    board_revision: "Kingroon KP3S Pro V2 integrated controller"
+    mcu_model: "stm32f103xe"
+    bootloader_or_flash_method: "Klipper make flash with reviewed STM32F103 USART3 config"
+  firmware_build:
+    command: "make menuconfig && make"
+    output_artifact: "out/klipper.bin"
+    expected_dictionary_path: "out/klipper.dict"
+  firmware_flash:
+    method: "human-executed reviewed flash step at the machine"
+    exact_command_or_ui_steps: "power off, enter bootloader, copy reviewed klipper.bin, reboot"
+    rollback_method: "restore previous Klipper checkout and previous printer.cfg backup"
+    rollback_artifact: "backups/klipper-stage-b-prepatch"
+  printer_cfg:
+    baseline_backup_path: "backups/printer.cfg.stage-b-before"
+    scanner_sync_diff: "reviewed [scanner_sync] diff keeps metadata-only safety fields explicit"
+    enable: true
+    mode: "metadata_only"
+    hardware_outputs_enabled: false
+    output_pins_configured: false
+    camera_trigger_pin: "none"
+    led_white_output: "unset"
+  expected_scanner_sync_formats:
+    commands:
+      - "scanner_sync_start oid=%c next_frame_id=%u"
+      - "scanner_sync_stop oid=%c reason=%c"
+      - "scanner_sync_schedule_z oid=%c seq=%u stripe_id=%u target_kind=%c target_value=%i z_target_nm=%i"
+      - "scanner_sync_arm_af_window oid=%c seq=%u stripe_id=%u frame_id=%u stripe_frame_index=%u position_axis=%c trigger_position_count=%i pattern_id=%u settle_us=%u xvs_trigger_pulse_us=%u exposure_hold_us=%u"
+      - "scanner_sync_fire_af_window_now oid=%c seq=%u stripe_id=%u frame_id=%u stripe_frame_index=%u position_axis=%c event_position_count=%i pattern_id=%u settle_us=%u xvs_trigger_pulse_us=%u exposure_hold_us=%u"
+      - "scanner_sync_run_stationary_af_test oid=%c seq=%u stripe_id=%u first_frame_id=%u frame_count=%u frame_period_us=%u position_axis=%c event_position_count=%i pattern_id=%u settle_us=%u xvs_trigger_pulse_us=%u exposure_hold_us=%u"
+    responses:
+      - "scanner_sync_frame_event oid=%c frame_id=%u stripe_id=%u stripe_frame_index=%u pattern_id=%u position_axis=%c event_position=%i x_count=%i y_count=%i z_count=%i mcu_time_us=%u status=%c flags=%u"
+      - "scanner_sync_scheduler_terminal oid=%c stripe_id=%u status=%c reason=%c emitted_frame_count=%u expected_frame_count=%u last_frame_id=%i next_frame_id=%u next_stripe_frame_index=%u mcu_time_us=%u"
+      - "scanner_sync_z_scheduled oid=%c seq=%u stripe_id=%u status=%c"
+      - "scanner_sync_z_applied oid=%c seq=%u frame_id=%u z_cmd_count=%i status=%c"
+      - "scanner_sync_z_rejected oid=%c seq=%u reason=%c status=%c"
+  expected_capture:
+    jsonl_path: "captures/stage-b/scanner-sync-events.jsonl"
+    summary_json_path: "captures/stage-b/scanner-sync-summary.json"
+    expected_record_count: 7
+    expected_frame_count: 5
+    expected_terminal_count: 1
+    expected_first_frame_id: 1360
+    expected_last_frame_id: 1364
+    expected_stripes_seen: [6]
+  stop_conditions_reviewed: true

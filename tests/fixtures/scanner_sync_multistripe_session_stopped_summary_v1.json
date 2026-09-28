@@ -1,0 +1,23 @@
+{
+  "first_frame_id": 100,
+  "frame_event_count": 1,
+  "hardware_outputs_enabled": false,
+  "next_frame_id": 101,
+  "scan_id": "multi-stripe-dry-run",
+  "started_stripe_count": 1,
+  "status": "stopped",
+  "stripe_count": 2,
+  "stripes": [
+    {
+      "first_frame_id": 100,
+      "frame_event_count": 1,
+      "last_frame_id": 100,
+      "status": "stopped",
+      "stripe_id": 11,
+      "stripe_index": 0,
+      "terminal_message": "stop requested during stripe execution",
+      "terminal_reason_code": "host_stop"
+    }
+  ],
+  "terminal_record_count": 1
+}

@@ -1,0 +1,151 @@
+{
+  "schema_id": "firmware_base_gate_replay_evidence_v1",
+  "schema_version": "1.0.0",
+  "report_id": "firmware-base-gate-replay-evidence-v1",
+  "generated_at": "2026-07-02T00:00:00Z",
+  "source_fixtures": [
+    "tests/fixtures/frame_event_replay_protocol_v1.jsonl",
+    "tests/fixtures/frame_event_replay_protocol_v1_clean_completion.jsonl",
+    "tests/fixtures/frame_event_replay_protocol_v1_fault_terminal.jsonl"
+  ],
+  "software_only": true,
+  "hardware_outputs_enabled": false,
+  "live_hardware_access_used": false,
+  "live_readiness_claimed": false,
+  "final_firmware_base_selected": false,
+  "candidate_coverage": "common_protocol_fixture_only",
+  "advanced_spike_gates": [
+    "safe_stop_or_fault_terminal_behavior_per_candidate",
+    "scheduled_z_bidirectional_ack_path"
+  ],
+  "safe_stop_fault_terminal_check_passed": true,
+  "scheduled_z_ack_path_check_passed": true,
+  "z_rejection_path_observed": true,
+  "software_replay_evidence_passed": true,
+  "remaining_spike_gates_before_close": [
+    "bench_safe_or_no_hardware_timing_result",
+    "position_indexed_output_jitter_measurement",
+    "safe_stop_or_fault_terminal_behavior_per_candidate",
+    "scheduled_z_bidirectional_ack_path",
+    "homing_state_and_coordinate_source_integration",
+    "future_encoder_coordinate_source_path",
+    "fork_or_plugin_maintenance_cost",
+    "approved_live_hardware_procedure_before_outputs"
+  ],
+  "fixtures": [
+    {
+      "fixture": "tests/fixtures/frame_event_replay_protocol_v1.jsonl",
+      "accepted": true,
+      "record_count": 7,
+      "event_types": [
+        "FRAME_EVENT",
+        "Z_SCHEDULED",
+        "FRAME_EVENT",
+        "Z_APPLIED",
+        "FRAME_EVENT",
+        "Z_REJECTED",
+        "SCHEDULER_TERMINAL"
+      ],
+      "frame_count": 3,
+      "terminal_count": 1,
+      "terminal_statuses": [
+        "stopped"
+      ],
+      "terminal_reason_codes": [
+        "host_stop"
+      ],
+      "z_scheduled_count": 1,
+      "z_applied_count": 1,
+      "z_rejected_count": 1,
+      "z_outcomes": [
+        {
+          "seq": 700,
+          "outcome": "applied",
+          "scan_id": "simulator-frame-event-replay",
+          "stripe_id": 4,
+          "command_id": "z-frame-302",
+          "apply_target_kind": "frame",
+          "apply_at_frame_id": 302,
+          "apply_at_position_count": null,
+          "applied_frame_id": 302,
+          "applied_position": 1400,
+          "z_target_steps": 18
+        },
+        {
+          "seq": 701,
+          "outcome": "rejected",
+          "scan_id": "simulator-frame-event-replay",
+          "stripe_id": 4,
+          "command_id": "z-too-late",
+          "apply_target_kind": null,
+          "apply_at_frame_id": null,
+          "apply_at_position_count": null,
+          "applied_frame_id": null,
+          "applied_position": null,
+          "z_target_steps": null
+        }
+      ],
+      "hardware_outputs_enabled": false
+    },
+    {
+      "fixture": "tests/fixtures/frame_event_replay_protocol_v1_clean_completion.jsonl",
+      "accepted": true,
+      "record_count": 7,
+      "event_types": [
+        "FRAME_EVENT",
+        "FRAME_EVENT",
+        "FRAME_EVENT",
+        "FRAME_EVENT",
+        "Z_SCHEDULED",
+        "Z_APPLIED",
+        "FRAME_EVENT"
+      ],
+      "frame_count": 5,
+      "terminal_count": 0,
+      "terminal_statuses": [],
+      "terminal_reason_codes": [],
+      "z_scheduled_count": 1,
+      "z_applied_count": 1,
+      "z_rejected_count": 0,
+      "z_outcomes": [
+        {
+          "seq": 800,
+          "outcome": "applied",
+          "scan_id": "simulator-frame-event-replay-clean",
+          "stripe_id": 11,
+          "command_id": "z-position-1800",
+          "apply_target_kind": "position",
+          "apply_at_frame_id": null,
+          "apply_at_position_count": 1800,
+          "applied_frame_id": 404,
+          "applied_position": 1800,
+          "z_target_steps": 24
+        }
+      ],
+      "hardware_outputs_enabled": false
+    },
+    {
+      "fixture": "tests/fixtures/frame_event_replay_protocol_v1_fault_terminal.jsonl",
+      "accepted": true,
+      "record_count": 3,
+      "event_types": [
+        "FRAME_EVENT",
+        "FRAME_EVENT",
+        "SCHEDULER_TERMINAL"
+      ],
+      "frame_count": 2,
+      "terminal_count": 1,
+      "terminal_statuses": [
+        "fault"
+      ],
+      "terminal_reason_codes": [
+        "coordinate_source_error"
+      ],
+      "z_scheduled_count": 0,
+      "z_applied_count": 0,
+      "z_rejected_count": 0,
+      "z_outcomes": [],
+      "hardware_outputs_enabled": false
+    }
+  ]
+}

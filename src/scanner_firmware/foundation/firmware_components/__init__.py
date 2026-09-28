@@ -1,0 +1,1 @@
+"""Firmware component interface namespace."""

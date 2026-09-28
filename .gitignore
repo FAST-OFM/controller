@@ -1,0 +1,33 @@
+# OS/editor artifacts
+.DS_Store
+*~
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Local environments and caches
+.venv/
+venv/
+env/
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+arduino/**/build-*/
+arduino/**/*.eep
+arduino/**/*.elf
+arduino/**/*.hex
+arduino/**/*.o
+
+# Local bench/live-control helper scripts. Keep hardware-running tools out of
+# the firmware foundation repository unless a reviewed issue explicitly scopes
+# them.
+arduino/**/tools/

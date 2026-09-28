@@ -1,0 +1,352 @@
+diff --git a/klippy/extras/scanner_sync.py b/klippy/extras/scanner_sync.py
+new file mode 100644
+index 000000000..14ab30488
+--- /dev/null
++++ b/klippy/extras/scanner_sync.py
+@@ -0,0 +1,104 @@
++# Scanner synchronization host extra.
++#
++# Phase 2 metadata-only sketch. This module does not schedule motion, toggle
++# GPIO, trigger a camera, drive LEDs, or apply Z motion.
++
++class ScannerSync:
++    def __init__(self, config):
++        self.printer = config.get_printer()
++        self.enabled = config.getboolean('enable', False)
++        self.protocol_version = config.getint('protocol_version', 1, minval=1, maxval=1)
++        self.mode = config.get('mode', 'metadata_only')
++        self.hardware_outputs_enabled = config.getboolean(
++            'hardware_outputs_enabled', False)
++        if self.mode != 'metadata_only':
++            raise config.error("scanner_sync only supports metadata_only mode")
++        if self.hardware_outputs_enabled:
++            raise config.error(
++                "scanner_sync hardware outputs are not supported")
++        self.status = 'disabled'
++        self.callback_events = []
++        self.last_event = None
++        self.commands = {}
++        if not self.enabled:
++            return
++
++        mcu_name = config.get('mcu', 'mcu')
++        self.mcu = self.printer.lookup_object(mcu_name)
++        self.oid = self.mcu.create_oid()
++        self.cmd_queue = self.mcu.alloc_command_queue()
++        self.mcu.register_config_callback(self._build_config)
++        self.status = 'configured'
++
++    def _build_config(self):
++        self.mcu.add_config_cmd(
++            "config_scanner_sync oid=%d protocol_version=%d"
++            " hardware_outputs_enabled=0"
++            % (self.oid, self.protocol_version), is_init=True)
++        self.commands['start'] = self.mcu.lookup_command(
++            "scanner_sync_start oid=%c next_frame_id=%u", cq=self.cmd_queue)
++        self.commands['stop'] = self.mcu.lookup_command(
++            "scanner_sync_stop oid=%c reason=%c", cq=self.cmd_queue)
++        self.commands['schedule_z'] = self.mcu.lookup_command(
++            "scanner_sync_schedule_z oid=%c seq=%u stripe_id=%u"
++            " target_kind=%c target_value=%i z_target_nm=%i",
++            cq=self.cmd_queue)
++        self.commands['arm_af_window'] = self.mcu.lookup_command(
++            "scanner_sync_arm_af_window oid=%c seq=%u stripe_id=%u"
++            " frame_id=%u stripe_frame_index=%u position_axis=%c"
++            " trigger_position_count=%i pattern_id=%u settle_us=%u"
++            " xvs_trigger_pulse_us=%u exposure_hold_us=%u",
++            cq=self.cmd_queue)
++        self.commands['fire_af_window_now'] = self.mcu.lookup_command(
++            "scanner_sync_fire_af_window_now oid=%c seq=%u stripe_id=%u"
++            " frame_id=%u stripe_frame_index=%u position_axis=%c"
++            " event_position_count=%i pattern_id=%u settle_us=%u"
++            " xvs_trigger_pulse_us=%u exposure_hold_us=%u",
++            cq=self.cmd_queue)
++        self.commands['run_stationary_af_test'] = self.mcu.lookup_command(
++            "scanner_sync_run_stationary_af_test oid=%c seq=%u stripe_id=%u"
++            " first_frame_id=%u frame_count=%u frame_period_us=%u"
++            " position_axis=%c event_position_count=%i pattern_id=%u"
++            " settle_us=%u xvs_trigger_pulse_us=%u exposure_hold_us=%u",
++            cq=self.cmd_queue)
++        self.mcu.register_serial_response(
++            self._handle_frame_event,
++            "scanner_sync_frame_event oid=%c frame_id=%u stripe_id=%u"
++            " stripe_frame_index=%u pattern_id=%u position_axis=%c"
++            " event_position=%i x_count=%i y_count=%i z_count=%i"
++            " mcu_time_us=%u status=%c flags=%u", self.oid)
++        self.mcu.register_serial_response(
++            self._handle_scheduler_terminal,
++            "scanner_sync_scheduler_terminal oid=%c stripe_id=%u status=%c"
++            " reason=%c emitted_frame_count=%u expected_frame_count=%u"
++            " last_frame_id=%i next_frame_id=%u next_stripe_frame_index=%u"
++            " mcu_time_us=%u", self.oid)
++        self.mcu.register_serial_response(
++            self._handle_z_scheduled,
++            "scanner_sync_z_scheduled oid=%c seq=%u stripe_id=%u status=%c",
++            self.oid)
++        self.mcu.register_serial_response(
++            self._handle_z_applied,
++            "scanner_sync_z_applied oid=%c seq=%u frame_id=%u"
++            " z_cmd_count=%i status=%c", self.oid)
++        self.mcu.register_serial_response(
++            self._handle_z_rejected,
++            "scanner_sync_z_rejected oid=%c seq=%u reason=%c status=%c",
++            self.oid)
++
++    def _record_event(self, event_type, params):
++        event = {'event_type': event_type, 'params': dict(params)}
++        self.callback_events.append(event)
++        self.last_event = event
++
++    def _handle_frame_event(self, params):
++        self._record_event('FRAME_EVENT', params)
++
++    def _handle_scheduler_terminal(self, params):
++        self.status = 'terminal'
++        self._record_event('SCHEDULER_TERMINAL', params)
++
++    def _handle_z_scheduled(self, params):
++        self._record_event('Z_SCHEDULED', params)
++
++    def _handle_z_applied(self, params):
++        self._record_event('Z_APPLIED', params)
++
++    def _handle_z_rejected(self, params):
++        self._record_event('Z_REJECTED', params)
++
++    def get_status(self, eventtime):
++        return {
++            'enabled': self.enabled,
++            'mode': self.mode,
++            'hardware_outputs_enabled': self.hardware_outputs_enabled,
++            'status': self.status,
++            'callback_events': list(self.callback_events),
++            'last_event': self.last_event,
++        }
++
++
++def load_config(config):
++    return ScannerSync(config)
+diff --git a/src/Makefile b/src/Makefile
+index fe99d0e01..f0e8daff8 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -1,6 +1,6 @@
+ # Main code build rules
+ 
+-src-y += sched.c command.c basecmd.c debugcmds.c
++src-y += sched.c command.c basecmd.c debugcmds.c scanner_sync.c
+ src-$(CONFIG_HAVE_GPIO) += initial_pins.c gpiocmds.c stepper.c endstop.c \
+     trsync.c
+ src-$(CONFIG_WANT_ADC) += adccmds.c
+diff --git a/src/scanner_sync.c b/src/scanner_sync.c
+new file mode 100644
+index 000000000..74e6d2f08
+--- /dev/null
++++ b/src/scanner_sync.c
+@@ -0,0 +1,125 @@
++// Scanner synchronization command stubs.
++//
++// Phase 2 metadata-only sketch. This file emits scanner-sync metadata without
++// scheduling motion, toggling GPIO, triggering a camera, driving LEDs, or
++// applying Z motion.
++
++#include "basecmd.h" // oid_alloc
++#include "command.h" // DECL_COMMAND
++#include "sched.h" // DECL_SHUTDOWN
++
++struct scanner_sync {
++    uint32_t next_frame_id, emitted_frame_count, expected_frame_count;
++    uint8_t protocol_version, active, hardware_outputs_enabled;
++};
++
++void
++command_config_scanner_sync(uint32_t *args)
++{
++    struct scanner_sync *ss = oid_alloc(
++        args[0], command_config_scanner_sync, sizeof(*ss));
++    ss->protocol_version = args[1];
++    ss->hardware_outputs_enabled = args[2];
++}
++DECL_COMMAND(command_config_scanner_sync,
++             "config_scanner_sync oid=%c protocol_version=%c"
++             " hardware_outputs_enabled=%c");
++
++static struct scanner_sync *
++scanner_sync_oid_lookup(uint8_t oid)
++{
++    return oid_lookup(oid, command_config_scanner_sync);
++}
++
++static void
++scanner_sync_emit_frame_event(uint8_t oid, struct scanner_sync *ss)
++{
++    sendf("scanner_sync_frame_event oid=%c frame_id=%u stripe_id=%u"
++          " stripe_frame_index=%u pattern_id=%u position_axis=%c"
++          " event_position=%i x_count=%i y_count=%i z_count=%i"
++          " mcu_time_us=%u status=%c flags=%u",
++          oid, ss->next_frame_id, 0, ss->emitted_frame_count, 0, 0,
++          ss->emitted_frame_count, ss->emitted_frame_count, 0, 0, 0, 0, 0);
++    ss->next_frame_id++;
++    ss->emitted_frame_count++;
++}
++
++static void
++scanner_sync_emit_terminal(uint8_t oid, struct scanner_sync *ss, uint8_t reason)
++{
++    int32_t last_frame_id = -1;
++    if (ss->emitted_frame_count)
++        last_frame_id = ss->next_frame_id - 1;
++    sendf("scanner_sync_scheduler_terminal oid=%c stripe_id=%u status=%c"
++          " reason=%c"
++          " emitted_frame_count=%u expected_frame_count=%u last_frame_id=%i"
++          " next_frame_id=%u next_stripe_frame_index=%u mcu_time_us=%u",
++          oid, 0, 0, reason, ss->emitted_frame_count, ss->expected_frame_count,
++          last_frame_id, ss->next_frame_id, ss->emitted_frame_count, 0);
++}
++
++void
++command_scanner_sync_start(uint32_t *args)
++{
++    uint8_t oid = args[0];
++    struct scanner_sync *ss = scanner_sync_oid_lookup(oid);
++    if (ss->hardware_outputs_enabled)
++        return;
++    ss->next_frame_id = args[1];
++    ss->emitted_frame_count = 0;
++    ss->expected_frame_count = 1;
++    ss->active = 1;
++    scanner_sync_emit_frame_event(oid, ss);
++}
++DECL_COMMAND(command_scanner_sync_start,
++             "scanner_sync_start oid=%c next_frame_id=%u");
++
++void
++command_scanner_sync_stop(uint32_t *args)
++{
++    uint8_t oid = args[0], reason = args[1];
++    struct scanner_sync *ss = scanner_sync_oid_lookup(oid);
++    ss->active = 0;
++    scanner_sync_emit_terminal(oid, ss, reason);
++}
++DECL_COMMAND(command_scanner_sync_stop,
++             "scanner_sync_stop oid=%c reason=%c");
++
++void
++command_scanner_sync_schedule_z(uint32_t *args)
++{
++    uint8_t oid = args[0];
++    uint32_t seq = args[1];
++    uint32_t stripe_id = args[2];
++    uint8_t target_kind = args[3];
++    int32_t target_value = args[4];
++    int32_t z_target_nm = args[5];
++    struct scanner_sync *ss = scanner_sync_oid_lookup(oid);
++
++    if (!ss->active || target_kind > 1 || !target_value || !z_target_nm) {
++        sendf("scanner_sync_z_rejected oid=%c seq=%u reason=%c status=%c",
++              oid, seq, 0, 1);
++        return;
++    }
++    sendf("scanner_sync_z_scheduled oid=%c seq=%u stripe_id=%u status=%c",
++          oid, seq, stripe_id, 0);
++    if (target_kind == 0 && target_value <= ss->next_frame_id) {
++        sendf("scanner_sync_z_applied oid=%c seq=%u frame_id=%u"
++              " z_cmd_count=%i status=%c",
++              oid, seq, ss->next_frame_id, z_target_nm, 0);
++    }
++}
++DECL_COMMAND(command_scanner_sync_schedule_z,
++             "scanner_sync_schedule_z oid=%c seq=%u stripe_id=%u"
++             " target_kind=%c target_value=%i z_target_nm=%i");
++
++void
++command_scanner_sync_arm_af_window(uint32_t *args)
++{
++    uint8_t oid = args[0];
++    uint32_t seq = args[1];
++    struct scanner_sync *ss = scanner_sync_oid_lookup(oid);
++    if (!ss->active) {
++        sendf("scanner_sync_z_rejected oid=%c seq=%u reason=%c status=%c",
++              oid, seq, 0, 1);
++    }
++}
++DECL_COMMAND(command_scanner_sync_arm_af_window,
++             "scanner_sync_arm_af_window oid=%c seq=%u stripe_id=%u frame_id=%u"
++             " stripe_frame_index=%u position_axis=%c trigger_position_count=%i"
++             " pattern_id=%u settle_us=%u xvs_trigger_pulse_us=%u"
++             " exposure_hold_us=%u");
++
++void
++command_scanner_sync_fire_af_window_now(uint32_t *args)
++{
++    uint8_t oid = args[0];
++    uint32_t seq = args[1];
++    struct scanner_sync *ss = scanner_sync_oid_lookup(oid);
++    if (!ss->active) {
++        sendf("scanner_sync_z_rejected oid=%c seq=%u reason=%c status=%c",
++              oid, seq, 0, 1);
++    }
++}
++DECL_COMMAND(command_scanner_sync_fire_af_window_now,
++             "scanner_sync_fire_af_window_now oid=%c seq=%u stripe_id=%u"
++             " frame_id=%u stripe_frame_index=%u position_axis=%c"
++             " event_position_count=%i pattern_id=%u settle_us=%u"
++             " xvs_trigger_pulse_us=%u exposure_hold_us=%u");
++
++void
++command_scanner_sync_run_stationary_af_test(uint32_t *args)
++{
++    uint8_t oid = args[0];
++    uint32_t seq = args[1];
++    struct scanner_sync *ss = scanner_sync_oid_lookup(oid);
++    if (!ss->active) {
++        sendf("scanner_sync_z_rejected oid=%c seq=%u reason=%c status=%c",
++              oid, seq, 0, 1);
++    }
++}
++DECL_COMMAND(command_scanner_sync_run_stationary_af_test,
++             "scanner_sync_run_stationary_af_test oid=%c seq=%u stripe_id=%u"
++             " first_frame_id=%u frame_count=%u frame_period_us=%u"
++             " position_axis=%c event_position_count=%i pattern_id=%u"
++             " settle_us=%u xvs_trigger_pulse_us=%u exposure_hold_us=%u");
++
++void
++scanner_sync_shutdown(void)
++{
++    uint8_t oid;
++    struct scanner_sync *ss;
++    foreach_oid(oid, ss, command_config_scanner_sync) {
++        ss->active = 0;
++    }
++}
++DECL_SHUTDOWN(scanner_sync_shutdown);
+diff --git a/test/klippy/scanner_sync.cfg b/test/klippy/scanner_sync.cfg
+new file mode 100644
+index 000000000..5e9c5f7c6
+--- /dev/null
++++ b/test/klippy/scanner_sync.cfg
+@@ -0,0 +1,13 @@
++[mcu]
++serial: /tmp/klipper_scanner_sync_mcu
++
++[printer]
++kinematics: none
++max_velocity: 300
++max_accel: 3000
++
++[scanner_sync]
++enable: true
++protocol_version: 1
++mode: metadata_only
++hardware_outputs_enabled: false
+diff --git a/test/klippy/scanner_sync.test b/test/klippy/scanner_sync.test
+new file mode 100644
+index 000000000..d2be484f8
+--- /dev/null
++++ b/test/klippy/scanner_sync.test
+@@ -0,0 +1,5 @@
++# Scanner-sync host extra smoke test
++DICTIONARY scanner_sync_hostsimulator.dict
++CONFIG scanner_sync.cfg
++
++STATUS

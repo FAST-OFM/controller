@@ -1,0 +1,39 @@
+# Slim Klipper MCU feature fragment for the live MKS Robin Mini V2 scanner bench.
+#
+# Preserve the normal board selections separately:
+# - STM32F103xE
+# - 28 KiB bootloader offset
+# - USART3 PB11/PB10 serial
+# - 250000 baud
+# - 8 MHz crystal
+#
+# This fragment records the optional-feature state verified on 2026-07-04.
+# It keeps hardware PWM because printer.cfg uses PA6/PA7 PWM outputs for the
+# MKS stepper-current Vref rails.
+
+# CONFIG_WANT_ADC is not set
+# CONFIG_WANT_SPI is not set
+# CONFIG_WANT_SOFTWARE_SPI is not set
+# CONFIG_WANT_I2C is not set
+# CONFIG_WANT_SOFTWARE_I2C is not set
+CONFIG_WANT_HARD_PWM=y
+# CONFIG_WANT_BUTTONS is not set
+# CONFIG_WANT_TMCUART is not set
+# CONFIG_WANT_NEOPIXEL is not set
+# CONFIG_WANT_PULSE_COUNTER is not set
+# CONFIG_WANT_ST7920 is not set
+# CONFIG_WANT_HD44780 is not set
+# CONFIG_WANT_ADXL345 is not set
+# CONFIG_WANT_LIS2DW is not set
+# CONFIG_WANT_BMI160 is not set
+# CONFIG_WANT_MPU9250 is not set
+# CONFIG_WANT_ICM20948 is not set
+# CONFIG_WANT_THERMOCOUPLE is not set
+# CONFIG_WANT_HX71X is not set
+# CONFIG_WANT_ADS131M0X is not set
+# CONFIG_WANT_ADS1220 is not set
+# CONFIG_WANT_LDC1612 is not set
+# CONFIG_WANT_SENSOR_ANGLE is not set
+# CONFIG_NEED_SENSOR_BULK is not set
+# CONFIG_WANT_TRIGGER_ANALOG is not set
+# CONFIG_NEED_SOS_FILTER is not set

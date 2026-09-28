@@ -1,0 +1,33 @@
+{
+  "first_frame_id": 100,
+  "frame_event_count": 3,
+  "hardware_outputs_enabled": false,
+  "next_frame_id": 103,
+  "scan_id": "multi-stripe-dry-run",
+  "started_stripe_count": 2,
+  "status": "fault",
+  "stripe_count": 2,
+  "stripes": [
+    {
+      "first_frame_id": 100,
+      "frame_event_count": 2,
+      "last_frame_id": 101,
+      "status": "completed",
+      "stripe_id": 11,
+      "stripe_index": 0,
+      "terminal_message": null,
+      "terminal_reason_code": null
+    },
+    {
+      "first_frame_id": 102,
+      "frame_event_count": 1,
+      "last_frame_id": 102,
+      "status": "fault",
+      "stripe_id": 12,
+      "stripe_index": 1,
+      "terminal_message": "simulated fault after second stripe first frame",
+      "terminal_reason_code": "scheduler_fault"
+    }
+  ],
+  "terminal_record_count": 1
+}

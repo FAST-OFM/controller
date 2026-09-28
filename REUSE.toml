@@ -1,0 +1,33 @@
+version = 1
+
+[[annotations]]
+path = "**"
+precedence = "override"
+SPDX-FileCopyrightText = "2026 Alexander Fridman"
+SPDX-License-Identifier = "CC-BY-NC-SA-4.0"
+
+[[annotations]]
+path = [
+  ".github/workflows/**",
+  ".python-version",
+  "arduino/**",
+  "pyproject.toml",
+  "scripts/**",
+  "src/**",
+  "tests/**",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 Alexander Fridman"
+SPDX-License-Identifier = "PolyForm-Noncommercial-1.0.0"
+
+[[annotations]]
+path = [
+  "docs/live-mks/**",
+  "docs/patches/**",
+]
+precedence = "override"
+SPDX-FileCopyrightText = [
+  "Klipper contributors",
+  "2026 Alexander Fridman",
+]
+SPDX-License-Identifier = "GPL-3.0-only"

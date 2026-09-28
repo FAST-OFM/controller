@@ -1,0 +1,227 @@
+{
+  "schema_id": "scanner_core_firmware_telemetry_report_values_v1",
+  "schema_version": 1,
+  "fixture_id": "fixture_core_firmware_telemetry_report_values_v1",
+  "contract_id": "observability_telemetry_event_v1",
+  "source_fixture_ids": [
+    "firmware_telemetry_controller_decode_report_v1",
+    "firmware_telemetry_readiness_report_v1",
+    "firmware_telemetry_dry_run_scheduler_report_v1"
+  ],
+  "source_fixture_sha256": {
+    "firmware_telemetry_controller_decode_report_v1.json": "5101a076c2ecca8e10a9424958720a5212d39bd251f25d1d0e51747a8b117a94",
+    "firmware_telemetry_readiness_report_v1.json": "5458bf833ccf6e495d4695991315c6a564bc949e2747e772e334b94263dba40d",
+    "firmware_telemetry_dry_run_scheduler_report_v1.json": "2c3d07763a08250a1105df9bbed2d5218044655656b5623e4544a548dc055f1e"
+  },
+  "reports": [
+    {
+      "schema_id": "firmware_telemetry_report_v1",
+      "schema_version": "1.0.0",
+      "report_id": "controller-decode-telemetry-v1",
+      "generated_at": "2026-07-02T00:00:00Z",
+      "source_component": "scanner-firmware.telemetry.report.controller_decode",
+      "hardware_outputs_enabled": false,
+      "live_hardware_access_used": false,
+      "event_count": 1,
+      "event_names": [
+        "controller_event_decoded"
+      ],
+      "events": [
+        {
+          "schema_id": "firmware_telemetry_event_v1",
+          "schema_version": "1.0.0",
+          "event_name": "controller_event_decoded",
+          "source_component": "scanner-firmware.telemetry.report.controller_decode",
+          "severity": "info",
+          "hardware_outputs_enabled": false,
+          "live_hardware_access_used": false,
+          "run_id": "run-fixture-telemetry",
+          "scan_id": "scan-telemetry",
+          "payload": {
+            "report_kind": "controller_decode_summary"
+          }
+        }
+      ]
+    },
+    {
+      "schema_id": "firmware_telemetry_report_v1",
+      "schema_version": "1.0.0",
+      "report_id": "readiness-telemetry-v1",
+      "generated_at": "2026-07-02T00:00:00Z",
+      "source_component": "scanner-firmware.telemetry.report.readiness",
+      "hardware_outputs_enabled": false,
+      "live_hardware_access_used": false,
+      "event_count": 2,
+      "event_names": [
+        "readiness_check_result",
+        "readiness_check_result"
+      ],
+      "events": [
+        {
+          "schema_id": "firmware_telemetry_event_v1",
+          "schema_version": "1.0.0",
+          "event_name": "readiness_check_result",
+          "source_component": "scanner-firmware.telemetry.report.readiness",
+          "severity": "info",
+          "hardware_outputs_enabled": false,
+          "live_hardware_access_used": false,
+          "run_id": "run-fixture-telemetry",
+          "payload": {
+            "report_kind": "readiness_check_result"
+          }
+        },
+        {
+          "schema_id": "firmware_telemetry_event_v1",
+          "schema_version": "1.0.0",
+          "event_name": "readiness_check_result",
+          "source_component": "scanner-firmware.telemetry.report.readiness",
+          "severity": "warning",
+          "hardware_outputs_enabled": false,
+          "live_hardware_access_used": false,
+          "run_id": "run-fixture-telemetry",
+          "payload": {
+            "report_kind": "readiness_check_result"
+          }
+        }
+      ]
+    },
+    {
+      "schema_id": "firmware_telemetry_report_v1",
+      "schema_version": "1.0.0",
+      "report_id": "dry-run-scheduler-telemetry-v1",
+      "generated_at": "2026-07-02T00:00:00Z",
+      "source_component": "scanner-firmware.telemetry.report.dry_run_scheduler",
+      "hardware_outputs_enabled": false,
+      "live_hardware_access_used": false,
+      "event_count": 7,
+      "event_names": [
+        "frame_event_received",
+        "frame_event_received",
+        "z_scheduler_terminal",
+        "z_command_enqueued",
+        "z_command_accepted",
+        "z_command_rejected",
+        "z_command_applied"
+      ],
+      "events": [
+        {
+          "schema_id": "firmware_telemetry_event_v1",
+          "schema_version": "1.0.0",
+          "event_name": "frame_event_received",
+          "source_component": "scanner-firmware.telemetry.report.dry_run_scheduler",
+          "severity": "info",
+          "hardware_outputs_enabled": false,
+          "live_hardware_access_used": false,
+          "run_id": "run-fixture-telemetry",
+          "scan_id": "scan-telemetry",
+          "frame_id": 40,
+          "stripe_id": 3,
+          "stripe_frame_index": 0,
+          "mcu_time_us": 1000,
+          "payload": {
+            "report_kind": "dry_run_scheduler_outcome"
+          }
+        },
+        {
+          "schema_id": "firmware_telemetry_event_v1",
+          "schema_version": "1.0.0",
+          "event_name": "frame_event_received",
+          "source_component": "scanner-firmware.telemetry.report.dry_run_scheduler",
+          "severity": "info",
+          "hardware_outputs_enabled": false,
+          "live_hardware_access_used": false,
+          "run_id": "run-fixture-telemetry",
+          "scan_id": "scan-telemetry",
+          "frame_id": 41,
+          "stripe_id": 3,
+          "stripe_frame_index": 1,
+          "mcu_time_us": 1100,
+          "payload": {
+            "report_kind": "dry_run_scheduler_outcome"
+          }
+        },
+        {
+          "schema_id": "firmware_telemetry_event_v1",
+          "schema_version": "1.0.0",
+          "event_name": "z_scheduler_terminal",
+          "source_component": "scanner-firmware.telemetry.report.dry_run_scheduler",
+          "severity": "info",
+          "hardware_outputs_enabled": false,
+          "live_hardware_access_used": false,
+          "run_id": "run-fixture-telemetry",
+          "scan_id": "scan-telemetry",
+          "stripe_id": 3,
+          "mcu_time_us": 1100,
+          "payload": {
+            "report_kind": "dry_run_scheduler_outcome"
+          }
+        },
+        {
+          "schema_id": "firmware_telemetry_event_v1",
+          "schema_version": "1.0.0",
+          "event_name": "z_command_enqueued",
+          "source_component": "scanner-firmware.telemetry.report.dry_run_scheduler",
+          "severity": "debug",
+          "hardware_outputs_enabled": false,
+          "live_hardware_access_used": false,
+          "run_id": "run-fixture-telemetry",
+          "scan_id": "scan-telemetry",
+          "stripe_id": 3,
+          "command_id": "z-ok",
+          "payload": {
+            "report_kind": "dry_run_z_scheduler_outcome"
+          }
+        },
+        {
+          "schema_id": "firmware_telemetry_event_v1",
+          "schema_version": "1.0.0",
+          "event_name": "z_command_accepted",
+          "source_component": "scanner-firmware.telemetry.report.dry_run_scheduler",
+          "severity": "info",
+          "hardware_outputs_enabled": false,
+          "live_hardware_access_used": false,
+          "run_id": "run-fixture-telemetry",
+          "scan_id": "scan-telemetry",
+          "stripe_id": 3,
+          "command_id": "z-ok",
+          "payload": {
+            "report_kind": "dry_run_z_scheduler_outcome"
+          }
+        },
+        {
+          "schema_id": "firmware_telemetry_event_v1",
+          "schema_version": "1.0.0",
+          "event_name": "z_command_rejected",
+          "source_component": "scanner-firmware.telemetry.report.dry_run_scheduler",
+          "severity": "warning",
+          "hardware_outputs_enabled": false,
+          "live_hardware_access_used": false,
+          "run_id": "run-fixture-telemetry",
+          "scan_id": "scan-telemetry",
+          "stripe_id": 3,
+          "command_id": "z-too-soon",
+          "payload": {
+            "report_kind": "dry_run_z_scheduler_outcome"
+          }
+        },
+        {
+          "schema_id": "firmware_telemetry_event_v1",
+          "schema_version": "1.0.0",
+          "event_name": "z_command_applied",
+          "source_component": "scanner-firmware.telemetry.report.dry_run_scheduler",
+          "severity": "info",
+          "hardware_outputs_enabled": false,
+          "live_hardware_access_used": false,
+          "run_id": "run-fixture-telemetry",
+          "scan_id": "scan-telemetry",
+          "frame_id": 44,
+          "stripe_id": 3,
+          "command_id": "z-ok",
+          "payload": {
+            "report_kind": "dry_run_z_scheduler_outcome"
+          }
+        }
+      ]
+    }
+  ]
+}

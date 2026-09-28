@@ -1,0 +1,12 @@
+config_scanner_sync oid=%c protocol_version=%c hardware_outputs_enabled=%c
+scanner_sync_start oid=%c next_frame_id=%u
+scanner_sync_stop oid=%c reason=%c
+scanner_sync_schedule_z oid=%c seq=%u stripe_id=%u target_kind=%c target_value=%i z_target_nm=%i
+scanner_sync_arm_af_window oid=%c seq=%u stripe_id=%u frame_id=%u stripe_frame_index=%u position_axis=%c trigger_position_count=%i pattern_id=%u settle_us=%u xvs_trigger_pulse_us=%u exposure_hold_us=%u
+scanner_sync_fire_af_window_now oid=%c seq=%u stripe_id=%u frame_id=%u stripe_frame_index=%u position_axis=%c event_position_count=%i pattern_id=%u settle_us=%u xvs_trigger_pulse_us=%u exposure_hold_us=%u
+scanner_sync_run_stationary_af_test oid=%c seq=%u stripe_id=%u first_frame_id=%u frame_count=%u frame_period_us=%u position_axis=%c event_position_count=%i pattern_id=%u settle_us=%u xvs_trigger_pulse_us=%u exposure_hold_us=%u
+scanner_sync_frame_event oid=%c frame_id=%u stripe_id=%u stripe_frame_index=%u pattern_id=%u position_axis=%c event_position=%i x_count=%i y_count=%i z_count=%i mcu_time_us=%u status=%c flags=%u
+scanner_sync_scheduler_terminal oid=%c stripe_id=%u status=%c reason=%c emitted_frame_count=%u expected_frame_count=%u last_frame_id=%i next_frame_id=%u next_stripe_frame_index=%u mcu_time_us=%u
+scanner_sync_z_scheduled oid=%c seq=%u stripe_id=%u status=%c
+scanner_sync_z_applied oid=%c seq=%u frame_id=%u z_cmd_count=%i status=%c
+scanner_sync_z_rejected oid=%c seq=%u reason=%c status=%c
